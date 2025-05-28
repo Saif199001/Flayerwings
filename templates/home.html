@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Siplite Natural Teas offers the finest organic and natural teas, sourced from the best tea estates in India. Explore our premium collection of herbal, green, and black teas." />
+    <meta name="keywords" content="organic tea, natural tea, green tea, herbal tea, black tea, premium tea, best tea in India" />
+    <meta name="author" content="Flayer Wings" />
+    <link rel="canonical" href="https://www.flayerwings.co.in/" />
+    <link rel="shortcut icon" href="{% static 'images/favicon01.jpeg' %}" type="image/x-icon" />
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <title>
+      {% block title %}
+        Flayer Wings
+      {% endblock %}
+    </title>
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="Flayer Wings - Your 24*7 technology partner" />
+    <meta property="og:description" content="Discover the best natural teas from India's premium tea estates. Experience purity in every sip." />
+    <meta property="og:image" content="{% static 'images/tea_farm.jpg' %}" />
+    <meta property="og:url" content="https://www.flayerwings.co.in/" />
+    <meta property="og:type" content="website" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Siplite Natural Teas - Pure & Organic Tea" />
+    <meta name="twitter:description" content="Experience the finest organic teas from India's best tea estates. Shop green tea, black tea, and herbal blends." />
+    <meta name="twitter:image" content="{% static 'images/tea_farm.jpg' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container nav-con">
+          <img class="nav-logo" src="{% static 'images/flayerlogo1.jpeg' %}" alt="Flayer Wings Logo" class="logo" />
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span><i class="bi bi-menu-button-wide"></i></span></button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Services</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="hero-section">
+        <div class="container hero-con">
+          <a href="#" class="btn btn-primary hero-btn">Get Started</a>
+        </div>
+      </section>
+      <section class="services-section py-5 bg-light">
+        <div class="container">
+          <h2 class="text-center mb-4">Our Services</h2>
+          <p class="text-center mb-5">Powering Growth Through Technology | Your 24/7 Digital Partner</p>
+
+          <div class="accordion" id="servicesAccordion">
+            <!-- Service 1 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingWeb"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeb" aria-expanded="true" aria-controls="collapseWeb"><i class="bi bi-laptop me-2"></i> Web Development</button></h2>
+              <div id="collapseWeb" class="accordion-collapse collapse show" aria-labelledby="headingWeb" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Personal & Business Websites</li>
+                    <li>E-commerce Platforms</li>
+                    <li>Learning Management Systems</li>
+                    <li>CRM & ERP Integrations</li>
+                  </ul>
+                  <a href="#" class="btn btn-outline-primary">Contact Us</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingSEO"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSEO" aria-expanded="false" aria-controls="collapseSEO"><i class="bi bi-graph-up-arrow me-2"></i> SEO & Digital Marketing</button></h2>
+              <div id="collapseSEO" class="accordion-collapse collapse" aria-labelledby="headingSEO" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                  <ul>
+                    <li>On-Page & Technical SEO</li>
+                    <li>Social Media Marketing (SMM)</li>
+                    <li>Google & Facebook Ads</li>
+                    <li>AI-Powered Campaign Automation</li>
+                    <li>Influencer & Affiliate Marketing</li>
+                  </ul>
+                  <a href="#" class="btn btn-outline-primary">Contact Us</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingBranding"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBranding" aria-expanded="false" aria-controls="collapseBranding"><i class="bi bi-brilliance me-2"></i> Branding & Creative Design</button></h2>
+              <div id="collapseBranding" class="accordion-collapse collapse" aria-labelledby="headingBranding" data-bs-parent="#servicesAccordion">
+                <div class="accordion-body">
+                  <ul>
+                    <li>Logo & Packaging Design</li>
+                    <li>Social Media Branding</li>
+                    <li>Company Profiles & Collateral</li>
+                    <li>Clean, Minimal & Scalable Designs</li>
+                  </ul>
+                  <a href="#" class="btn btn-outline-primary">Contact Us</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="services-section">
+        <div class="container">
+          <h2>Our Services</h2>
+          <p class="service-para">Powering Growth Through Technology | Your 24/7 Digital Partner</p>
+          <p>At Flayer Wings, we deliver complete IT & digital solutions for startups, creators, and enterprises. Whether you're building your personal brand or scaling a global business, we're here to make it happen.</p>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="service-card">
+                <i class="bi bi-laptop h1"></i>
+                <h3>Web Development</h3>
+                <p>Craft high-performance websites tailored to your goals.</p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Personal & Business Websites
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> E-commerce Platforms
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Learning Management Systems
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> CRM & ERP Integrations
+                </p>
+                <button class="btn">Contact Us</button>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <i class="bi bi-graph-up-arrow h1"></i>
+                <h3>SEO & Digital Marketing</h3>
+                <p>Drive traffic, boost visibility, and grow conversions.</p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> On-Page & Technical SEO
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Social Media Marketing (SMM)
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Google & Facebook Ads
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> AI-Powered Campaign Automation
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Influencer & Affiliate Marketing
+                </p>
+                <button class="btn">Contact Us</button>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <i class="bi bi-brilliance h1"></i>
+                <h3>Branding & Creative Design</h3>
+                <p>Tell your story through powerful branding.</p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Logo & Packaging Design
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Social Media Branding (Instagram, YouTube)
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Company Profiles & Collateral
+                </p>
+                <p>
+                  <i class="bi bi-arrow-right-circle-fill"></i> Clean, Minimal & Scalable Designs
+                </p>
+                <button class="btn">Contact Us</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-laptop-fill h1"></i>
+                  <h3>Custom Software Development</h3>
+                  <p>Smart, secure, and scalable solutions that evolve with your business.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> ERP Systems
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Education & Healthcare Portals
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> AI Tools & Automation Scripts
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Mobile & Web Applications
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-anthropic h1"></i>
+                  <h3>AI Tools & Business Automation</h3>
+                  <p>Streamline operations with cutting-edge tech.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> WhatsApp Bots & Funnels
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> AI for Content & Design
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Workflow Automation for Startups & Enterprises
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-bag-check h1"></i>
+                  <h3>White-Label Services</h3>
+                  <p>Grow your business under your own brand.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Website & App Development
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> SEO & Marketing Fulfillment
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Branding Kits
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> 24/7 Partner Support + Training
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-globe-asia-australia h1"></i>
+                  <h3>International Services</h3>
+                  <p>Digital excellence across the globe.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Outsourced Projects (USA, UK, UAE, Canada)
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> SaaS Tools & Licensing
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Remote Teams & Tech Support
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Stripe & Payoneer Payments Accepted
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-buildings-fill h1"></i>
+                  <h3>B2B & B2G Solutions</h3>
+                  <p>Digital solutions for businesses and government institutions.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Business Automation Systems
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> CRM, ERP, Health & Edu Platforms
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> E-Governance Portals
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Retainer Plans & Consultation
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <i class="bi bi-bag-check h1"></i>
+                  <h3>Future Innovations</h3>
+                  <p>Shaping the future of digital with bold ideas.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> SaaS Product Launches (2025–26)
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Internal Mobile Apps
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> AI Tools for SMBs
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Flayer Labs: Our Tech Accelerator
+                  </p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Franchise & Global Expansion
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="service-card">
+                  <i class="bi bi-anthropic h1"></i>
+                  <h3>Content Writing & Copywriting</h3>
+                  <p>Words that engage, convert, and inspire action.</p>
+                  <p>
+                    <i class="bi bi-arrow-right-circle-fill"></i> Website Content <i class="bi bi-arrow-right-circle-fill"></i> SEO Blog Articles <i class="bi bi-arrow-right-circle-fill"></i> Social Media Captions <i class="bi bi-arrow-right-circle-fill"></i> Product Descriptions <i class="bi bi-arrow-right-circle-fill"></i> Ad Copywriting (Google & Meta) <i class="bi bi-arrow-right-circle-fill"></i> Press Releases & Company Profiles <i class="bi bi-arrow-right-circle-fill"></i> Email Newsletters & Funnels <i class="bi bi-arrow-right-circle-fill"></i> Business Pitch Decks & Presentations <i class="bi bi-arrow-right-circle-fill"></i> Resume & LinkedIn Profile Optimization
+                  </p>
+                  <button class="btn">Contact Us</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- Close the missing .row div -->
+      </section>
+      <section class="about-section mt-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <img src="{% static 'images/about.jpg' %}" alt="About Us" class="img-fluid about-img" />
+            </div>
+            <div class="col-md-6">
+              <h2>About Flayer Wings</h2>
+              <p>Flayer Wings is a leading digital solutions provider, dedicated to empowering businesses with cutting-edge technology and innovative strategies. Our team of experts specializes in web development, digital marketing, branding, and AI-driven solutions.</p>
+              <p>With a commitment to excellence and a passion for innovation, we help our clients achieve their goals and stay ahead in the digital landscape.</p>
+              <button class="btn" herf></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  </body>
+</html>
