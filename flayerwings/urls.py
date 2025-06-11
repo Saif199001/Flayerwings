@@ -20,11 +20,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from main import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
+    path('development/', views.development, name='development'),
+    path('marketing/', views.marketing, name='marketing'),
+    path('branding/', views.branding, name='branding'),
+    path('automation/', views.automation, name='automation'),
+    path('institutions/', views.institutions, name='institutions'),
+    path('blog/', views.blog_list_view, name='blog_list_view'),
+    path('blog/<slug:slug>/', views.blog_detail_view, name='blog_detail_view'),
+    path('home/', views.docontact, name='docontact'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

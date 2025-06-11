@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTOSLUG_SLUGIFY_FUNCTION = 'django.utils.text.slugify'
+
 
 # Application definition
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'autoslug',
 ]
 
 MIDDLEWARE = [
