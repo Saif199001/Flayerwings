@@ -1,0 +1,13 @@
+appdirs==1.4.4
+asgiref==3.8.1
+autoslug==1.0.5
+Django==5.2.1
+django-autoslug==1.9.9
+fs==2.4.16
+inflection==0.5.1
+pillow==11.2.1
+setuptools==80.9.0
+six==1.17.0
+sqlparse==0.5.3
+unicode-slugify==0.1.5
+Unidecode==1.4.0
