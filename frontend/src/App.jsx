@@ -29,6 +29,7 @@ function Home() {
   return <div id="top" className="app-shell"><Navbar /><main>
     <section className="hero-section">
       <div className="hero-glow" aria-hidden="true" />
+      <div className="hero-stars" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /><i /></div>
       <div className="hero-content">
         <p className="eyebrow hero-eyebrow"><span aria-hidden="true">●</span> AI • SOFTWARE • SAAS</p>
         <h1>Build.<br /><span>Automate.</span><br />Grow.</h1>
@@ -46,16 +47,19 @@ function Home() {
         <div className="orbit-ring ring-two" />
         <div className="orbit-ring ring-three" />
         <div className="orbit-ring ring-four" />
+        <div className="orbit-ring ring-five" />
         <div className="orbit-circuit circuit-one" />
         <div className="orbit-circuit circuit-two" />
         <div className="orbit-node node-one" />
         <div className="orbit-node node-two" />
         <div className="orbit-node node-three" />
         <div className="orbit-node node-four" />
-        <div className="orbit-chip chip-ai"><span>AI</span></div>
-        <div className="orbit-chip chip-code"><span>{"</>"}</span></div>
-        <div className="orbit-chip chip-data"><span>✦</span></div>
-        <div className="orbit-chip chip-flow"><span>↗</span></div>
+        <div className="orbit-node node-five" />
+        <div className="orbit-node node-six" />
+        <div className="orbit-card orbit-card-ai"><span className="orbit-card-icon">✦</span><strong>AI</strong><small>Intelligence</small></div>
+        <div className="orbit-card orbit-card-code"><span className="orbit-card-icon">&lt;/&gt;</span><strong>Development</strong><small>Build. Scale. Ship.</small></div>
+        <div className="orbit-card orbit-card-data"><span className="orbit-card-icon">▮▮▮</span><strong>Data</strong><small>Analytics</small></div>
+        <div className="orbit-card orbit-card-cloud"><span className="orbit-card-icon">⌁</span><strong>Cloud</strong><small>Scalable</small></div>
         <div className="orbit-logo"><span className="orbit-logo-glow" /><img src="/flayer_wings_logo.jpeg" alt="" width="150" height="150" /></div>
       </div>
     </section>
