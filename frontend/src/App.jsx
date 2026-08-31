@@ -10,6 +10,7 @@ import ServicesPage from "./pages/ServicesPage";
 import AboutPage from "./pages/AboutPage";
 import "./styles/premium.css";
 import "./styles/hero-slice-2.css";
+import "./styles/hero-premium.css";
 
 const solutions = [
   ["01", "AI Solutions", "Practical AI experiences and automation designed around real business workflows.", "Automate repetitive work"],
