@@ -5,7 +5,6 @@ async function request(path, options = {}) {
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
     ...options,
   });
-
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const error = new Error(data.detail || "Request failed");
@@ -19,10 +18,15 @@ export function createLead(payload) {
   return request("/leads/", { method: "POST", body: JSON.stringify(payload) });
 }
 
-export function getTools() {
-  return request("/tools/");
-}
+export function getTools() { return request("/tools/"); }
+export function getProjects() { return request("/projects/"); }
 
-export function getProjects() {
-  return request("/projects/");
+export function generateSocialAudit(payload) {
+  return request("/tools/social-media-audit/generate/", { method: "POST", body: JSON.stringify(payload) });
+}
+export function generateCaption(payload) {
+  return request("/tools/caption-generator/generate/", { method: "POST", body: JSON.stringify(payload) });
+}
+export function generateContentIdeas(payload) {
+  return request("/tools/content-ideas/generate/", { method: "POST", body: JSON.stringify(payload) });
 }
