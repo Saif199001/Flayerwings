@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { generateCaption, generateContentIdeas, generateSocialAudit } from "../services/api";
+import ToolLeadCapture from "../components/ToolLeadCapture";
 
 const TOOL_CONFIG = {
   "social-media-audit": {
@@ -57,6 +58,7 @@ export default function ToolPage() {
         </form>
       </div>
       {result && <ResultView result={result} slug={slug} />}
+      {result && <ToolLeadCapture slug={slug} toolName={tool.title} resultSummary={result.score ? `Quick audit score: ${result.score}/10.` : result.caption ? result.caption : "Content ideas were generated successfully."} />}
     </main>
   );
 }
