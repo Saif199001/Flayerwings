@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Project
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class ProjectApiTests(TestCase):
     def setUp(self):
         Project.objects.create(
