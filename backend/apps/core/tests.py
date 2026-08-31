@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class HealthEndpointTests(TestCase):
     def test_health_endpoint_returns_ok(self):
         response = self.client.get(reverse("health"))
