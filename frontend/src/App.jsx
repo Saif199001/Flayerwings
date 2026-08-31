@@ -26,7 +26,38 @@ const principles = [
 
 function Home() {
   return <div id="top" className="app-shell"><Navbar /><main>
-    <section className="hero-section"><div className="hero-glow" aria-hidden="true" /><div className="hero-content"><p className="eyebrow">AI • SOFTWARE • SAAS</p><h1>Build.<br /><span>Automate.</span><br />Grow.</h1><p className="hero-copy">We build AI-powered software, SaaS products and digital solutions that help modern businesses work smarter and grow faster.</p><div className="actions"><a className="button button-primary" href="#contact">Start a Project <span>→</span></a><a className="button button-secondary" href="/tools">Explore Free Tools</a></div><div className="hero-trust"><span>AI-first delivery</span><span>Practical solutions</span><span>Built for growth</span></div></div><div className="hero-orbit" aria-hidden="true"><div className="orbit-ambient" /><div className="orbit-grid" /><div className="orbit-ring ring-one" /><div className="orbit-ring ring-two" /><div className="orbit-ring ring-three" /><div className="orbit-ring ring-four" /><div className="orbit-circuit circuit-one" /><div className="orbit-circuit circuit-two" /><div className="orbit-node node-one" /><div className="orbit-node node-two" /><div className="orbit-node node-three" /><div className="orbit-node node-four" /><div className="orbit-chip chip-ai"><span>AI</span></div><div className="orbit-chip chip-code"><span>{"</>"}</span></div><div className="orbit-chip chip-data"><span>✦</span></div><div className="orbit-chip chip-flow"><span>↗</span></div><div className="orbit-logo"><img src="/flayer_wings_logo.jpeg" alt="" width="150" height="150" /></div></div></section>
+    <section className="hero-section">
+      <div className="hero-glow" aria-hidden="true" />
+      <div className="hero-content">
+        <p className="eyebrow hero-eyebrow"><span aria-hidden="true">●</span> AI • SOFTWARE • SAAS</p>
+        <h1>Build.<br /><span>Automate.</span><br />Grow.</h1>
+        <p className="hero-copy">We build AI-powered software, SaaS products and digital solutions that help modern businesses work smarter and grow faster.</p>
+        <div className="actions hero-actions">
+          <a className="button button-primary" href="#contact">Start a Project <span>→</span></a>
+          <a className="button button-secondary" href="/tools">Explore Free Tools <span aria-hidden="true">↗</span></a>
+        </div>
+        <div className="hero-trust"><span>AI-first delivery</span><span>Practical solutions</span><span>Built for growth</span></div>
+      </div>
+      <div className="hero-orbit" aria-hidden="true">
+        <div className="orbit-ambient" />
+        <div className="orbit-grid" />
+        <div className="orbit-ring ring-one" />
+        <div className="orbit-ring ring-two" />
+        <div className="orbit-ring ring-three" />
+        <div className="orbit-ring ring-four" />
+        <div className="orbit-circuit circuit-one" />
+        <div className="orbit-circuit circuit-two" />
+        <div className="orbit-node node-one" />
+        <div className="orbit-node node-two" />
+        <div className="orbit-node node-three" />
+        <div className="orbit-node node-four" />
+        <div className="orbit-chip chip-ai"><span>AI</span></div>
+        <div className="orbit-chip chip-code"><span>{"</>"}</span></div>
+        <div className="orbit-chip chip-data"><span>✦</span></div>
+        <div className="orbit-chip chip-flow"><span>↗</span></div>
+        <div className="orbit-logo"><span className="orbit-logo-glow" /><img src="/flayer_wings_logo.jpeg" alt="" width="150" height="150" /></div>
+      </div>
+    </section>
 
     <section className="principles-strip" aria-label="How Flayer Wings works">{principles.map(([title, copy]) => <article key={title}><strong>{title}</strong><span>{copy}</span></article>)}</section>
 
