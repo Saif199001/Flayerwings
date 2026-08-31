@@ -1,0 +1,9 @@
+{
+  "name": "Flayer Wings",
+  "short_name": "Flayer Wings",
+  "description": "AI, Software & SaaS Solutions for Modern Businesses.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030820",
+  "theme_color": "#030820"
+}
