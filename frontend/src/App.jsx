@@ -7,6 +7,7 @@ import ToolsPage from "./pages/ToolsPage";
 import ToolPage from "./pages/ToolPage";
 import ProductPage from "./pages/ProductPage";
 import ServicesPage from "./pages/ServicesPage";
+import AboutPage from "./pages/AboutPage";
 
 const solutions = [["01", "AI Solutions", "Practical AI experiences and automation designed around real business workflows."], ["02", "Custom Software", "Purpose-built software for teams that have outgrown generic tools."], ["03", "SaaS Development", "From product concept to scalable SaaS foundations and polished user experiences."], ["04", "Web & Mobile", "Fast, modern digital products that make your business easier to discover and use."]];
 
@@ -20,4 +21,4 @@ function Home() {
   </main><Footer /></div>;
 }
 
-export default function App() { return <Routes><Route path="/" element={<Home />} /><Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} /><Route path="/tools" element={<><Navbar /><ToolsPage /><Footer /></>} /><Route path="/tools/:slug" element={<><Navbar /><ToolPage /><Footer /></>} /><Route path="/product" element={<><Navbar /><ProductPage /><Footer /></>} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>; }
+export default function App() { return <Routes><Route path="/" element={<Home />} /><Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} /><Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} /><Route path="/tools" element={<><Navbar /><ToolsPage /><Footer /></>} /><Route path="/tools/:slug" element={<><Navbar /><ToolPage /><Footer /></>} /><Route path="/product" element={<><Navbar /><ProductPage /><Footer /></>} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>; }
