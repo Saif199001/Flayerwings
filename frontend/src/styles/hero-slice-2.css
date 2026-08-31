@@ -1,0 +1,42 @@
+/* Hero Slice 2 — orbital intelligence visual */
+.app-shell .hero-orbit{position:relative;aspect-ratio:1/1;max-width:500px;min-width:0;overflow:visible;transform:translateZ(0)}
+.app-shell .hero-orbit::after{content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(126,164,220,.055);box-shadow:0 0 70px rgba(43,128,255,.08),inset 0 0 70px rgba(95,103,238,.05);pointer-events:none;animation:fw-orbit-breathe 6s ease-in-out infinite}
+.app-shell .orbit-ambient{inset:5%;opacity:.85;animation:fw-orbit-pulse 7s ease-in-out infinite}
+.app-shell .orbit-grid{inset:17%;opacity:.34;transform:rotate(-8deg) scale(1.02);mask-image:radial-gradient(circle,black 8%,transparent 68%);-webkit-mask-image:radial-gradient(circle,black 8%,transparent 68%)}
+.app-shell .orbit-ring{animation:fw-ring-drift 18s linear infinite}
+.app-shell .ring-two{animation-direction:reverse;animation-duration:23s}
+.app-shell .ring-three{animation:fw-ring-drift 28s linear infinite}
+.app-shell .ring-four{animation:fw-ring-drift 20s linear infinite reverse}
+.app-shell .orbit-ring.ring-one{border-color:rgba(86,215,255,.30);box-shadow:0 0 18px rgba(86,215,255,.045)}
+.app-shell .orbit-ring.ring-two{border-color:rgba(159,104,255,.28);box-shadow:0 0 22px rgba(159,104,255,.035)}
+.app-shell .orbit-ring.ring-three{border-color:rgba(86,215,255,.18)}
+.app-shell .orbit-ring.ring-four{border-color:rgba(177,108,255,.18)}
+.app-shell .orbit-circuit{opacity:.58;box-shadow:0 0 8px rgba(86,215,255,.12);animation:fw-circuit-pulse 4.5s ease-in-out infinite}
+.app-shell .circuit-two{animation-delay:-2.2s}
+.app-shell .orbit-node{animation:fw-node-blink 3.4s ease-in-out infinite}
+.app-shell .node-two{animation-delay:-1.1s}
+.app-shell .node-three{animation-delay:-2.1s}
+.app-shell .node-four{animation-delay:-.5s}
+.app-shell .orbit-chip{overflow:hidden;animation:fw-chip-float 5s ease-in-out infinite}
+.app-shell .orbit-chip::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(86,215,255,.08),transparent 42%,rgba(177,108,255,.08));opacity:.8;pointer-events:none}
+.app-shell .chip-code{animation-delay:-1.6s}
+.app-shell .chip-data{animation-delay:-3.1s}
+.app-shell .chip-flow{animation-delay:-2.3s}
+.app-shell .orbit-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;overflow:visible}
+.app-shell .orbit-logo::after{content:"";position:absolute;inset:-18px;border:1px solid rgba(86,215,255,.09);border-radius:54px;box-shadow:0 0 45px rgba(86,215,255,.09);animation:fw-core-pulse 4s ease-in-out infinite}
+.app-shell .orbit-logo-glow{position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,rgba(70,176,255,.30),rgba(126,76,255,.12) 48%,transparent 72%);filter:blur(16px);z-index:-1;animation:fw-logo-glow 4.5s ease-in-out infinite}
+.app-shell .orbit-logo img{object-fit:cover;box-shadow:0 0 28px rgba(38,128,255,.13)}
+
+@keyframes fw-ring-drift{from{rotate:0deg}to{rotate:360deg}}
+@keyframes fw-orbit-breathe{0%,100%{opacity:.55;transform:scale(.985)}50%{opacity:1;transform:scale(1.01)}}
+@keyframes fw-orbit-pulse{0%,100%{opacity:.62;transform:scale(.98)}50%{opacity:.9;transform:scale(1.02)}}
+@keyframes fw-circuit-pulse{0%,100%{opacity:.28}50%{opacity:.78}}
+@keyframes fw-node-blink{0%,100%{opacity:.48;transform:scale(.8)}50%{opacity:1;transform:scale(1.22)}}
+@keyframes fw-chip-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@keyframes fw-core-pulse{0%,100%{opacity:.42;transform:scale(.96)}50%{opacity:.9;transform:scale(1.02)}}
+@keyframes fw-logo-glow{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+
+@media(max-width:860px){.app-shell .hero-orbit{width:min(440px,90vw);max-width:none}.app-shell .orbit-logo::after{inset:-14px;border-radius:48px}}
+@media(max-width:560px){.app-shell .hero-orbit{width:min(360px,94vw)}.app-shell .orbit-grid{inset:18%}.app-shell .orbit-logo::after{inset:-12px;border-radius:45px}.app-shell .orbit-chip{box-shadow:inset 0 1px rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.18)}}
+
+@media(prefers-reduced-motion:reduce){.app-shell .hero-orbit *,.app-shell .hero-orbit::after{animation:none!important}}
