@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import SiteContent
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class SiteContentApiTests(TestCase):
     def setUp(self):
         SiteContent.objects.create(key="home-hero", title="Build. Automate. Grow.", body="Test", is_published=True)
