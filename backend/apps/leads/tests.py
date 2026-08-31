@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Lead
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class LeadApiTests(TestCase):
     def test_create_contact_lead(self):
         response = self.client.post(
