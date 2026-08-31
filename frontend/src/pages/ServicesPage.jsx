@@ -1,0 +1,17 @@
+import { Link } from "react-router-dom";
+
+const services = [
+  { number: "01", title: "Social Media Management", tag: "IMMEDIATE FOCUS", copy: "Practical day-to-day social media support for businesses that need a consistent presence without building a full in-house team.", points: ["Content planning & calendars", "Platform-ready posts & captions", "Publishing & workflow support", "Performance review & recommendations"] },
+  { number: "02", title: "AI & Automation", tag: "EFFICIENCY", copy: "Automate repetitive workflows and introduce practical AI where it can save time, improve consistency or unlock new capabilities.", points: ["Workflow automation", "AI-assisted processes", "Business-specific AI solutions", "Integration planning"] },
+  { number: "03", title: "Custom Software", tag: "BUILD", copy: "Purpose-built software for businesses with a workflow or problem that off-the-shelf tools don't solve well.", points: ["Web applications", "Internal business tools", "API-first systems", "Scalable foundations"] },
+  { number: "04", title: "SaaS Development", tag: "PRODUCT", copy: "From product architecture to polished interfaces, we build SaaS foundations designed to grow with the product.", points: ["Product architecture", "Django + React development", "API design", "MVP-to-scale planning"] },
+];
+
+export default function ServicesPage() {
+  return <main className="section services-page">
+    <section className="page-hero"><p className="eyebrow">SERVICES</p><h1>Technology that solves<br /><span>real business problems.</span></h1><p className="section-copy">We combine software, AI and practical execution to help businesses build, automate and grow. Right now, our social media service is our fastest path to helping businesses directly.</p><div className="actions"><a className="button button-primary" href="#contact">Discuss Your Business →</a><Link className="button button-secondary" to="/tools">Try Free Tools</Link></div></section>
+    <section className="service-list">{services.map((service) => <article className={`service-item ${service.number === "01" ? "service-priority" : ""}`} key={service.number}><div className="service-number">{service.number}</div><div className="service-main"><span className="status-pill">{service.tag}</span><h2>{service.title}</h2><p>{service.copy}</p><ul>{service.points.map((point) => <li key={point}>{point}</li>)}</ul></div><a className="text-link" href="#contact">Talk to us →</a></article>)}</section>
+    <section className="service-positioning"><p className="eyebrow">HOW WE WORK</p><div className="positioning-grid"><article><strong>01</strong><h3>Understand</h3><p>We start with the business problem, not a pre-selected technology.</p></article><article><strong>02</strong><h3>Build</h3><p>We keep solutions focused, useful and practical.</p></article><article><strong>03</strong><h3>Improve</h3><p>We use real feedback and results to decide what comes next.</p></article></div></section>
+    <section className="contact-section compact" id="contact"><div className="contact-copy"><p className="eyebrow">READY WHEN YOU ARE</p><h2>Let's talk about<br /><span>your next step.</span></h2><p>No complicated pitch. Tell us what you need help with and we'll start from there.</p></div><div className="contact-direct"><a className="button button-primary" href="tel:+917752987573">Call +91 77529 87573 →</a><p>Building No. 6, Avtar Enclave,<br />Paschim Vihar, New Delhi – 110063</p></div></section>
+  </main>;
+}
