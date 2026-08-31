@@ -1,0 +1,6 @@
+{
+  "name": "Flayer Wings",
+  "description": "AI-powered software, SaaS products, digital solutions and social media services for modern businesses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
