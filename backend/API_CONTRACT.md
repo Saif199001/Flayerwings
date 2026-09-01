@@ -28,21 +28,6 @@ Accepted fields:
 
 For `social_audit`, `social_profile_url` is required.
 
-## Tools
-
-`GET /api/v1/tools/`
-
-Returns active public tools.
-
-`GET /api/v1/tools/<slug>/`
-
-Returns one active public tool.
-
-Initial slugs:
-- `social-media-audit`
-- `caption-generator`
-- `content-ideas`
-
 ## Projects
 
 `GET /api/v1/projects/`
