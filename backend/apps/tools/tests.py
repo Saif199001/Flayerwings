@@ -55,6 +55,34 @@ class ToolApiTests(TestCase):
         self.assertTrue(payload["cta"])
         self.assertTrue(payload["hashtags"])
         self.assertEqual(payload["platform"], "LinkedIn")
+        self.assertNotIn("{business}", payload["caption"])
+        self.assertNotIn("{audience}", payload["caption"])
+        self.assertIn("AI automation", payload["caption"])
+        self.assertIn("startup founders", payload["caption"].lower())
+        self.assertGreaterEqual(len(payload["caption"].split()), 35)
+
+    def test_caption_generator_uses_requested_cta_and_platform(self):
+        response = self.client.post(
+            reverse("caption-generate"),
+            data={
+                "business": "Flayer Wings",
+                "topic": "launching a social media manager",
+                "audience": "startups, freelancers and brand owners",
+                "goal": "sales",
+                "content_type": "promotional",
+                "tone": "bold",
+                "platform": "instagram",
+                "cta": "Book a free demo",
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload["platform"], "Instagram")
+        self.assertEqual(payload["cta"], "Book a free demo")
+        self.assertIn("Book a free demo", payload["caption"])
+        self.assertNotIn("a startups", payload["caption"].lower())
+        self.assertNotIn("looking to launching", payload["caption"].lower())
 
     def test_content_ideas_returns_structured_ideas(self):
         response = self.client.post(
@@ -80,6 +108,10 @@ class ToolApiTests(TestCase):
             self.assertTrue(idea["goal"])
             self.assertTrue(idea["hook"])
             self.assertTrue(idea["outline"])
+            self.assertNotIn("{business}", idea["title"] + idea["hook"] + idea["outline"])
+            self.assertNotIn("{business}", idea["title"] + idea["hook"] + idea["outline"])
+        self.assertIn("SaaS", payload["ideas"][0]["title"])
+        self.assertIn("social media management", payload["ideas"][1]["title"].lower())
 
     def test_social_audit_returns_action_plan_without_fake_metrics(self):
         response = self.client.post(
