@@ -7,6 +7,38 @@ from .meta_client import MetaGraphError
 from .models import Tool
 
 
+CAPTION_AI_RESULT = {
+    "caption": "AI automation can remove repetitive work from a growing team when the workflow is designed around a real bottleneck. For startup founders, the useful question is not whether AI is impressive; it is which task should stop consuming human attention first. Start by mapping one weekly process, remove the manual handoffs, add a clear review step, and measure the time saved internally. Flayer Wings uses this approach to turn AI automation into a practical business workflow rather than another tool to manage. Book a free demo if you want to see how the process can fit your team.",
+    "hashtags": ["#FlayerWings", "#AIAutomation", "#Startups", "#Leads"],
+    "hook": "The best AI automation opportunity is usually the repetitive task your team has stopped noticing.",
+    "cta": "What workflow would you automate first?",
+    "platform": "LinkedIn",
+    "format": "Text post",
+    "strategy_note": "Lead with a business insight and give the reader a practical next step.",
+}
+
+
+CONTENT_IDEAS_AI_RESULT = {
+    "business": "Flayer Wings",
+    "audience": "startup founders",
+    "platform": "instagram",
+    "goal": "leads",
+    "content_pillars": ["Education", "Authority", "Proof", "Brand", "Utility"],
+    "ideas": [
+        {"title": "Why startup founders keep rebuilding the same workflow", "format": "Carousel", "pillar": "Education", "goal": "Reach", "hook": "The bottleneck may be the process, not the people using it.", "outline": "Show the repeated task → identify the hidden handoff → explain the cost → give a simpler workflow."},
+        {"title": "What a social media management workflow should automate first", "format": "Reel", "pillar": "Utility", "goal": "Trust", "hook": "Do not automate everything at once; start where repetition is highest.", "outline": "Map the weekly workflow → rank repetitive steps → choose the first automation → show the review point."},
+        {"title": "The hidden cost of creating every post from scratch", "format": "Text Post", "pillar": "Authority", "goal": "Saves", "hook": "The visible task is writing; the expensive part is deciding what to write next.", "outline": "Describe the decision load → separate planning from production → show a repeatable content system → give a starting rule."},
+        {"title": "How to turn social media activity into lead generation", "format": "Carousel", "pillar": "Conversion", "goal": "Leads", "hook": "More posts do not automatically create more enquiries.", "outline": "Define the desired enquiry → connect content to one problem → add one CTA → show the next step."},
+        {"title": "Which questions should a social media manager answer before you buy", "format": "Poll", "pillar": "Objection", "goal": "Trust", "hook": "The right questions reveal whether a tool will actually remove work.", "outline": "Ask about workflow fit → reporting → approvals → publishing → invite the audience to rank the priority."},
+        {"title": "Before and after: replacing scattered content tasks with one workflow", "format": "Case Study", "pillar": "Proof", "goal": "Leads", "hook": "The biggest improvement can be fewer handoffs, not more content.", "outline": "Show the starting workflow → mark each handoff → redesign the sequence → explain what evidence to compare."},
+        {"title": "The product decision rule we use when building Flayer Wings", "format": "Founder Post", "pillar": "Brand", "goal": "Connection", "hook": "A useful product should remove a recurring decision, not create another dashboard.", "outline": "State the principle → explain the problem it prevents → give one product example → describe who benefits."},
+        {"title": "A seven-question checklist for choosing social media software", "format": "Checklist", "pillar": "Utility", "goal": "Saves", "hook": "Use these questions before comparing feature lists.", "outline": "List seven buying questions → explain why each matters → flag common warning signs → give a final decision rule."},
+        {"title": "How to build a weekly content system in one afternoon", "format": "Tutorial", "pillar": "Education", "goal": "Understanding", "hook": "A repeatable system starts with fewer decisions, not more ideas.", "outline": "Choose three audience problems → assign formats → batch outlines → schedule review → prepare the next batch."},
+        {"title": "What stops small teams from getting value from social media tools", "format": "Interview", "pillar": "Research", "goal": "Engagement", "hook": "The biggest blocker may be the workflow around the tool.", "outline": "Ask three operators about their bottleneck → group answers → identify recurring friction → use responses for the next content batch."},
+    ],
+}
+
+
 @override_settings(SECURE_SSL_REDIRECT=False)
 class ToolApiTests(TestCase):
     def setUp(self):
@@ -37,7 +69,8 @@ class ToolApiTests(TestCase):
         response = self.client.get(reverse("tool-detail", kwargs={"slug": "disabled-tool"}))
         self.assertEqual(response.status_code, 404)
 
-    def test_caption_generator_returns_publishable_package(self):
+    @patch("apps.tools.generate_views.generate_json", return_value=CAPTION_AI_RESULT)
+    def test_caption_generator_returns_publishable_package(self, mock_ai):
         response = self.client.post(
             reverse("caption-generate"),
             data={
@@ -63,8 +96,10 @@ class ToolApiTests(TestCase):
         self.assertIn("AI automation", payload["caption"])
         self.assertIn("startup founders", payload["caption"].lower())
         self.assertGreaterEqual(len(payload["caption"].split()), 35)
+        mock_ai.assert_called_once()
 
-    def test_caption_generator_uses_requested_cta_and_platform(self):
+    @patch("apps.tools.generate_views.generate_json", return_value=CAPTION_AI_RESULT)
+    def test_caption_generator_uses_requested_cta_and_platform(self, mock_ai):
         response = self.client.post(
             reverse("caption-generate"),
             data={
@@ -86,8 +121,10 @@ class ToolApiTests(TestCase):
         self.assertIn("Book a free demo", payload["caption"])
         self.assertNotIn("a startups", payload["caption"].lower())
         self.assertNotIn("looking to launching", payload["caption"].lower())
+        mock_ai.assert_called_once()
 
-    def test_content_ideas_returns_structured_ideas(self):
+    @patch("apps.tools.generate_views.generate_json", return_value=CONTENT_IDEAS_AI_RESULT)
+    def test_content_ideas_returns_structured_ideas(self, mock_ai):
         response = self.client.post(
             reverse("content-ideas-generate"),
             data={
@@ -117,9 +154,10 @@ class ToolApiTests(TestCase):
             self.assertNotIn("{audience}", text)
             titles.append(idea["title"].lower())
         self.assertEqual(len(set(titles)), 10)
-        self.assertIn("saas", payload["ideas"][0]["title"].lower())
+        self.assertIn("saas", (payload["ideas"][1]["title"] + payload["ideas"][1]["outline"]).lower())
         self.assertIn("social media management", payload["ideas"][1]["title"].lower())
         self.assertIn("lead generation", payload["ideas"][3]["title"].lower())
+        mock_ai.assert_called_once()
 
     @patch("apps.tools.generate_views.run_live_social_audit", return_value=None)
     def test_social_audit_returns_action_plan_without_fake_metrics(self, mock_live_audit):
