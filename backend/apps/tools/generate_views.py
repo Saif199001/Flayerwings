@@ -15,9 +15,15 @@ PLATFORM_LABELS = {
 AI_SYSTEM = """You are a senior social-media strategist for Flayer Wings. Return JSON only.
 Reason from business context, audience, offer, goal and platform — never fill templates.
 Never invent metrics, testimonials, customer results, awards, clients, platform data or factual claims.
-Avoid buzzword stuffing and generic marketing language."""
+Avoid buzzword stuffing and generic marketing language.
+Write like an experienced strategist who understands what a real customer would stop scrolling to learn.
+"""
 
-GENERIC_PATTERNS = ("the 3 biggest", "behind the scenes:", "myth vs fact:", "save-worthy checklist", "do not need more information", "the useful approach is to focus on one outcome", "at flayer wings, we use this principle")
+GENERIC_PATTERNS = (
+    "the 3 biggest", "behind the scenes:", "myth vs fact:", "save-worthy checklist",
+    "do not need more information", "the useful approach is to focus on one outcome",
+    "at flayer wings, we use this principle",
+)
 
 
 def _bad_text(text):
@@ -50,21 +56,129 @@ Caption: 120–220 words unless platform strongly calls for shorter copy. Start 
     return result
 
 
+def _idea_is_usable(idea, data):
+    if not isinstance(idea, dict):
+        return False
+    required = ("title", "format", "pillar", "goal", "hook", "outline")
+    if any(not str(idea.get(k) or "").strip() for k in required):
+        return False
+
+    title = str(idea["title"]).strip()
+    hook = str(idea["hook"]).strip()
+    outline = str(idea["outline"]).strip()
+    title_lower = title.lower()
+
+    if len(title.split()) < 5 or len(title) > 150:
+        return False
+    if _bad_text(title) or _bad_text(hook):
+        return False
+    if len(outline.split()) < 8:
+        return False
+
+    # Do not allow the model to simply paste the form fields into every idea.
+    for field in ("audience", "industry", "offer"):
+        value = str(data.get(field) or "").strip().lower()
+        if len(value) >= 18 and value in title_lower:
+            return False
+
+    # A title should contain a concrete editorial angle, not just the product name.
+    angle_words = {
+        "why", "how", "when", "what", "which", "before", "after", "mistake", "mistakes",
+        "problem", "problems", "lesson", "lessons", "framework", "checklist", "guide",
+        "question", "questions", "cost", "reason", "reasons", "workflow", "process",
+        "example", "examples", "comparison", "decision", "decisions", "strategy", "steps",
+    }
+    if not angle_words.intersection(set(title_lower.replace("?", " ").replace(":", " ").split())):
+        return False
+    return True
+
+
+def _validate_ideas(result, data):
+    if not isinstance(result, dict):
+        return False
+    ideas = result.get("ideas")
+    if not isinstance(ideas, list) or len(ideas) != 10:
+        return False
+    if not isinstance(result.get("content_pillars"), list) or len(result["content_pillars"]) < 5:
+        return False
+    if any(not _idea_is_usable(idea, data) for idea in ideas):
+        return False
+
+    titles = [str(i["title"]).strip().lower() for i in ideas]
+    hooks = [str(i["hook"]).strip().lower() for i in ideas]
+    if len(set(titles)) != 10 or len(set(hooks)) < 8:
+        return False
+
+    # Prevent near-identical titles disguised as different ideas.
+    token_sets = [set(t.replace(":", " ").replace("—", " ").split()) for t in titles]
+    for index, tokens in enumerate(token_sets):
+        for other in token_sets[index + 1:]:
+            if len(tokens & other) / max(1, min(len(tokens), len(other))) > 0.72:
+                return False
+    return True
+
+
 def _ideas(data):
     prompt = f"""Build a 10-post content strategy for this business.
 INPUT: {data}
-Reason privately about audience problems, workflow friction, objections, desired outcomes, buying questions, proof needs and engagement triggers.
-Return JSON with exactly: business, audience, platform, goal, content_pillars, ideas. Each idea: title, format, pillar, goal, hook, outline.
-Exactly 10 materially different opportunities; at least 6 formats. Cover education, problem/solution, proof, objection handling, utility, authority and conversion. Titles must describe specific problems, decisions, lessons, use cases or outcomes. Hooks must add curiosity. Outlines must contain concrete production beats. Do not stuff input keywords into every title. Avoid generic templates and invented claims."""
-    result = generate_json(AI_SYSTEM, prompt, temperature=0.95, max_tokens=4500)
-    ideas = result.get("ideas") if isinstance(result, dict) else None
-    required = ("title", "format", "pillar", "goal", "hook", "outline")
-    if not isinstance(ideas, list) or len(ideas) != 10 or any(not isinstance(i, dict) or any(not i.get(k) for k in required) for i in ideas):
-        raise AIProviderError("Invalid AI content idea contract")
-    titles = [str(i["title"]).strip().lower() for i in ideas]
-    if len(set(titles)) != 10 or any(_bad_text(i["title"]) for i in ideas):
-        raise AIProviderError("AI content ideas were too generic")
-    return result
+
+First reason privately about:
+- the audience's recurring problems, frustrations, risks and desired outcomes;
+- what they are trying to decide or improve;
+- objections they would have before buying;
+- useful lessons, workflows, checklists or frameworks that can genuinely help them;
+- what proof can be shown without inventing results;
+- which topics naturally support the requested business goal.
+
+Then return JSON with exactly: business, audience, platform, goal, content_pillars, ideas.
+Each idea must contain exactly: title, format, pillar, goal, hook, outline.
+
+IMPORTANT EDITORIAL RULES:
+1. Do NOT copy the audience, industry or offer field into titles. Translate the context into a specific customer problem or decision.
+2. Do NOT make every idea about the product. Most ideas should teach, diagnose, compare, explain or help the audience make a decision; only some should directly connect to the offer.
+3. Every title needs a distinct angle and should sound like a real post someone would publish, not an AI content template.
+4. Never use generic title patterns such as “The 3 biggest…”, “Myth vs fact…”, “Behind the scenes…”, “Save-worthy checklist…”, or “Do not need more information…”.
+5. Do not stuff the business name, audience list, industry keywords or full offer description into titles.
+6. Hooks must create curiosity by naming a tension, mistake, overlooked detail, decision or useful promise — without fake statistics.
+7. Outlines must give concrete production beats: examples, questions to answer, steps to show, comparisons to make, or evidence to gather.
+8. Use exactly 10 materially different ideas and at least 7 different formats where appropriate.
+9. Cover education, problem/solution, objection handling, authority, utility, proof and conversion, but do not force these labels when they make the idea unnatural.
+10. Never invent customer names, metrics, testimonials, results, awards or factual claims.
+
+Make the output specific enough that a content creator could start producing the posts immediately."""
+
+    result = generate_json(AI_SYSTEM, prompt, temperature=0.8, max_tokens=5000)
+    if _validate_ideas(result, data):
+        return result
+
+    # One deliberate repair pass is better than silently falling back to the old
+    # template generator. A failed AI contract must never turn into generic output.
+    repair_prompt = f"""Rewrite the following 10 content ideas into a genuinely publishable strategy.
+
+ORIGINAL INPUT:
+{data}
+
+DRAFT TO REPAIR:
+{result}
+
+Return JSON only with exactly: business, audience, platform, goal, content_pillars, ideas.
+Each idea must contain: title, format, pillar, goal, hook, outline.
+
+Fix every problem below:
+- remove keyword stuffing and long audience/offer/industry phrases;
+- remove generic AI templates;
+- give every title one concrete customer problem, decision, lesson, use case or outcome;
+- make all 10 titles materially different;
+- make hooks specific and curiosity-driven;
+- make outlines actionable enough to film/write immediately;
+- keep claims evidence-safe and never invent metrics or customer proof;
+- do not make every idea a sales pitch.
+
+Do not mention these repair instructions in the output."""
+    repaired = generate_json(AI_SYSTEM, repair_prompt, temperature=0.65, max_tokens=5000)
+    if not _validate_ideas(repaired, data):
+        raise AIProviderError("AI content ideas failed the quality contract")
+    return repaired
 
 
 def _enrich_audit(data):
@@ -98,7 +212,8 @@ class ContentIdeasView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data); serializer.is_valid(raise_exception=True); data = serializer.validated_data
         try: result = _ideas(data)
-        except AIProviderError: result = generate_content_ideas(**data)
+        except AIProviderError as exc:
+            return Response({"error": str(exc), "code": "ai_quality_contract_failed"}, status=502)
         return Response(result)
 
 
