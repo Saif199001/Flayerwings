@@ -101,6 +101,7 @@ class ToolApiTests(TestCase):
         payload = response.json()
         self.assertEqual(len(payload["ideas"]), 10)
         self.assertEqual(len(payload["content_pillars"]), 5)
+        titles = []
         for idea in payload["ideas"]:
             self.assertTrue(idea["title"])
             self.assertTrue(idea["format"])
@@ -108,10 +109,14 @@ class ToolApiTests(TestCase):
             self.assertTrue(idea["goal"])
             self.assertTrue(idea["hook"])
             self.assertTrue(idea["outline"])
-            self.assertNotIn("{business}", idea["title"] + idea["hook"] + idea["outline"])
-            self.assertNotIn("{business}", idea["title"] + idea["hook"] + idea["outline"])
-        self.assertIn("SaaS", payload["ideas"][0]["title"])
+            text = idea["title"] + idea["hook"] + idea["outline"]
+            self.assertNotIn("{business}", text)
+            self.assertNotIn("{audience}", text)
+            titles.append(idea["title"].lower())
+        self.assertEqual(len(set(titles)), 10)
+        self.assertIn("saas", payload["ideas"][0]["title"].lower())
         self.assertIn("social media management", payload["ideas"][1]["title"].lower())
+        self.assertIn("lead generation", payload["ideas"][3]["title"].lower())
 
     def test_social_audit_returns_action_plan_without_fake_metrics(self):
         response = self.client.post(
