@@ -165,7 +165,10 @@ export default function ToolPage() {
 }
 
 function buildLeadSummary(result, slug) {
-  if (slug === "social-media-audit") return `Strategy baseline: ${result.score}/10 on ${result.platform}. Priority: ${result.next_step}`;
+  if (slug === "social-media-audit") {
+    const source = result.audit_type === "meta_live_profile_audit" ? "Live Meta profile audit" : "Strategy baseline";
+    return `${source}: ${result.score}/10 on ${result.platform}. Priority: ${result.next_step}`;
+  }
   if (slug === "caption-generator") return `Generated a ${result.platform} caption focused on ${result.goal || "the requested goal"}.`;
   return `Generated ${result.ideas?.length || 0} structured content opportunities for ${result.platform}.`;
 }
@@ -222,25 +225,78 @@ function ResultView({ result, slug }) {
     );
   }
 
+  const live = result.audit_type === "meta_live_profile_audit";
+  const performance = result.performance;
   return (
     <section className="tool-result-card" aria-label="Social Media Audit Results">
       <div className="result-header-bar">
-        <div><span className="eyebrow-cyan">STRATEGY BASELINE</span><h2 className="result-main-title">{result.score}/10 Growth Baseline</h2><p className="result-support-copy">{result.platform} · {result.business}</p></div>
+        <div>
+          <span className="eyebrow-cyan">{live ? "LIVE META AUDIT" : "STRATEGY BASELINE"}</span>
+          <h2 className="result-main-title">{result.score}/10 {live ? "Profile Growth Score" : "Growth Baseline"}</h2>
+          <p className="result-support-copy">{result.platform} · {result.business}{live && result.profile?.username ? ` · @${result.profile.username}` : ""}</p>
+          {live && <p className="result-support-copy">Evidence source: {result.data_source}</p>}
+        </div>
       </div>
       <div className="audit-overview-panel">
-        <div className="audit-score-circle"><div className="score-ring"><span className="score-number">{result.score}</span><span className="score-total">/10</span></div><span className="score-label">Starting Score</span></div>
+        <div className="audit-score-circle"><div className="score-ring"><span className="score-number">{result.score}</span><span className="score-total">/10</span></div><span className="score-label">{live ? "Live Score" : "Starting Score"}</span></div>
         <div className="audit-next-step-box"><span className="next-step-badge">FIX THIS FIRST</span><p className="next-step-content">{result.next_step}</p></div>
       </div>
+
+      {live && performance && (
+        <div className="audit-plan-grid">
+          <div>
+            <span className="eyebrow-cyan">LIVE PROFILE DATA</span>
+            <ul>
+              <li>{performance.followers?.toLocaleString() || 0} followers returned by Meta</li>
+              <li>{performance.sample_size} recent posts sampled</li>
+              <li>{performance.average_interactions} average likes + comments per sampled post</li>
+              <li>{performance.average_engagement_rate_percent == null ? "Engagement rate unavailable" : `${performance.average_engagement_rate_percent}% average sampled engagement rate`}</li>
+            </ul>
+          </div>
+          <div>
+            <span className="eyebrow-cyan">PUBLISHING SIGNAL</span>
+            <ul>
+              <li>{result.publishing?.posts_in_last_14_days || 0} sampled posts in the last 14 days</li>
+              <li>{result.publishing?.latest_post_days_ago == null ? "Latest post date unavailable" : `Latest sampled post was ${result.publishing.latest_post_days_ago} days ago`}</li>
+              <li>Top-performing sampled posts are ranked by observed likes + comments.</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
       <div className="audit-checks-grid">
         {(result.checks || []).map((item) => (
           <article key={item.key || item.title} className="audit-check-card">
             <div className="check-card-header"><strong>{item.title}</strong><span className="check-card-score">{item.score}/10</span></div>
             <span className="audit-priority">{item.priority}</span>
-            <p className="check-card-tip">{item.what_good_looks_like}</p>
+            <p className="check-card-tip">{item.what_good_looks_like || (item.evidence || []).join(" ")}</p>
+            {item.evidence && <p className="check-card-tip"><strong>Evidence:</strong> {item.evidence.join(" ")}</p>}
             <p className="check-card-action"><strong>Action:</strong> {item.action}</p>
           </article>
         ))}
       </div>
+
+      {live && performance?.top_posts?.length > 0 && (
+        <div className="audit-plan-grid">
+          <div>
+            <span className="eyebrow-cyan">TOP SAMPLED POSTS</span>
+            <ul>
+              {performance.top_posts.map((post) => (
+                <li key={post.id}>{post.interactions} interactions · {post.media_type || "Post"}{post.permalink ? ` · ${post.permalink}` : ""}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <span className="eyebrow-cyan">WHAT TO REPEAT</span>
+            <ul>
+              <li>Study the topic, format and opening of the strongest sampled post.</li>
+              <li>Turn the strongest recurring audience problem into a repeatable series.</li>
+              <li>Use the same primary CTA across high-intent content.</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
       <div className="audit-plan-grid">
         <div><span className="eyebrow-cyan">QUICK WINS</span><ul>{(result.quick_wins || []).map((item) => <li key={item}>{item}</li>)}</ul></div>
         <div><span className="eyebrow-cyan">7-DAY PLAN</span><ul>{(result.seven_day_plan || []).map((item) => <li key={item}>{item}</li>)}</ul></div>
