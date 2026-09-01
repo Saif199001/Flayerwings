@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -118,7 +120,8 @@ class ToolApiTests(TestCase):
         self.assertIn("social media management", payload["ideas"][1]["title"].lower())
         self.assertIn("lead generation", payload["ideas"][3]["title"].lower())
 
-    def test_social_audit_returns_action_plan_without_fake_metrics(self):
+    @patch("apps.tools.generate_views.run_live_social_audit", return_value=None)
+    def test_social_audit_returns_action_plan_without_fake_metrics(self, mock_live_audit):
         response = self.client.post(
             reverse("social-audit-generate"),
             data={
@@ -128,6 +131,10 @@ class ToolApiTests(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 200)
+        mock_live_audit.assert_called_once_with(
+            business="Flayer Wings",
+            profile_url="https://instagram.com/flayerwings",
+        )
         payload = response.json()
         self.assertEqual(payload["audit_type"], "strategy_baseline")
         self.assertEqual(payload["platform"], "Instagram")
