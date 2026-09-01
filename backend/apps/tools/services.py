@@ -47,7 +47,6 @@ def _clean_phrase(value, fallback):
 
 def _audience_phrase(audience):
     phrase = _clean_phrase(audience, "your audience")
-    # Avoid awkward article usage in hooks such as "a startups" or "a founders".
     lowered = phrase.lower()
     if lowered.startswith(("a ", "an ", "the ")):
         return phrase
@@ -99,12 +98,12 @@ def generate_caption(
     content_key = content_type.lower()
 
     hooks = {
-        "educational": f"{audience.title()} do not need more information about {topic_lower} — they need a clearer way to use it.",
+        "educational": f"{audience.title()} do not need more information about {topic} — they need a clearer way to use it.",
         "promotional": f"If {audience.lower()} want a better way to {topic_lower}, start with the outcome that matters most.",
         "announcement": f"A new step for {business}: {topic}.",
-        "story": f"One lesson we learned while working on {topic_lower}: the simple approach usually wins.",
+        "story": f"One lesson we learned while working on {topic}: the simple approach usually wins.",
         "problem/solution": f"If {topic_lower} keeps getting in the way, start by fixing the first bottleneck.",
-        "case study": f"What changes when {audience.lower()} approach {topic_lower} with a clear system? Start with one measurable outcome.",
+        "case study": f"What changes when {audience.lower()} approach {topic} with a clear system? Start with one measurable outcome.",
         "founder": f"Building {business} has reinforced one lesson for us: {topic}.",
     }
     hook = hooks.get(content_key, hooks["educational"])
@@ -114,7 +113,7 @@ def generate_caption(
     body = (
         f"{hook}\n\n"
         f"The useful approach is to focus on one outcome instead of trying to solve everything at once. "
-        f"For {audience.lower()}, that means turning {topic_lower} into a practical next step that can be understood and used today.\n\n"
+        f"For {audience.lower()}, that means turning {topic} into a practical next step that can be understood and used today.\n\n"
         f"At {business}, we use this principle to keep content useful: explain the problem, show what changes, "
         f"and give people a clear action to take. The goal here is {goal.lower()}, not simply more attention.\n\n"
         f"{requested_cta}"
