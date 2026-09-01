@@ -43,7 +43,7 @@ def _model():
     configured = os.getenv("AI_MODEL")
     if configured:
         return configured
-    return "gemini-2.5-flash" if _provider() == "gemini" else "gpt-4.1-mini"
+    return "gemini-3.6-flash" if _provider() == "gemini" else "gpt-4.1-mini"
 
 
 def _extract_json(text):
@@ -100,24 +100,40 @@ def _request_json(url, payload, headers=None):
 
 
 def _generate_gemini(system_prompt, user_prompt, temperature, max_tokens):
-    url = f"{_base_url()}/models/{_model()}:generateContent?" + urlencode({"key": _api_key()})
+    url = f"{_base_url()}/interactions?" + urlencode({"key": _api_key()})
     payload = {
-        "systemInstruction": {"parts": [{"text": system_prompt}]},
-        "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
-        "generationConfig": {
+        "model": _model(),
+        "input": user_prompt,
+        "system_instruction": system_prompt,
+        "generation_config": {
             "temperature": temperature,
-            "maxOutputTokens": max_tokens,
-            "responseMimeType": "application/json",
+            "max_output_tokens": max_tokens,
+        },
+        "response_format": {
+            "type": "text",
+            "mime_type": "application/json",
         },
     }
-    result = _request_json(url, payload)
+    result = _request_json(
+        url,
+        payload,
+        headers={"x-goog-api-key": _api_key()},
+    )
     if isinstance(result, dict) and result.get("error"):
         raise AIProviderError(result["error"].get("message", "Gemini API request failed."))
-    try:
-        parts = result["candidates"][0]["content"]["parts"]
-        content = "".join(part.get("text", "") for part in parts).strip()
-    except (KeyError, IndexError, TypeError) as exc:
-        raise AIProviderError("Gemini returned an unexpected response.") from exc
+
+    content = result.get("output_text") if isinstance(result, dict) else None
+    if not content and isinstance(result, dict):
+        for step in reversed(result.get("steps", [])):
+            if step.get("type") != "model_output":
+                continue
+            for part in step.get("content", []):
+                if part.get("type") == "text" and part.get("text"):
+                    content = part["text"]
+                    break
+            if content:
+                break
+
     if not content:
         raise AIProviderError("Gemini returned an empty response.")
     return _extract_json(content)
