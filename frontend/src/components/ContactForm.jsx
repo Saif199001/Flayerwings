@@ -20,6 +20,11 @@ export default function ContactForm() {
 
   async function submit(event) {
     event.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError("Please fill in your name, email and project requirements.");
+      setState("error");
+      return;
+    }
     setState("submitting");
     setError("");
     try {
@@ -33,19 +38,68 @@ export default function ContactForm() {
   }
 
   return (
-    <form className="contact-form" onSubmit={submit} noValidate>
-      <div className="form-grid">
-        <label>Name<input name="name" value={form.name} onChange={updateField} required autoComplete="name" /></label>
-        <label>Email<input name="email" type="email" value={form.email} onChange={updateField} required autoComplete="email" /></label>
-        <label>Company<input name="company" value={form.company} onChange={updateField} autoComplete="organization" /></label>
-        <label>Phone<input name="phone" value={form.phone} onChange={updateField} autoComplete="tel" /></label>
+    <form className="contact-form-card" onSubmit={submit} noValidate>
+      <div className="form-row-dual">
+        <div className="form-group">
+          <label htmlFor="contact-name">Your Name</label>
+          <input
+            id="contact-name"
+            name="name"
+            placeholder="Enter your name"
+            value={form.name}
+            onChange={updateField}
+            required
+            autoComplete="name"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="contact-email">Email Address</label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={updateField}
+            required
+            autoComplete="email"
+          />
+        </div>
       </div>
-      <label>What can we build for you?<textarea name="message" value={form.message} onChange={updateField} rows="5" required /></label>
-      <button className="button button-primary" type="submit" disabled={state === "submitting"}>
-        {state === "submitting" ? "Sending…" : "Send Inquiry →"}
+
+      <div className="form-group">
+        <label htmlFor="contact-message">How can we help you?</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          placeholder="Tell us about your project or requirements..."
+          value={form.message}
+          onChange={updateField}
+          rows="4"
+          required
+        />
+      </div>
+
+      <button className="button button-primary submit-btn" type="submit" disabled={state === "submitting"}>
+        {state === "submitting" ? (
+          <span>Sending...</span>
+        ) : (
+          <>
+            <span>Send Message</span> <span className="btn-arrow" aria-hidden="true">→</span>
+          </>
+        )}
       </button>
-      {state === "success" && <p className="form-success" role="status">Thanks! Your inquiry has been received.</p>}
-      {state === "error" && <p className="form-error" role="alert">{error}</p>}
+
+      {state === "success" && (
+        <div className="form-success-banner" role="status">
+          ✓ Thanks! Your message has been received. We'll be in touch shortly.
+        </div>
+      )}
+      {state === "error" && (
+        <div className="form-error-banner" role="alert">
+          {error}
+        </div>
+      )}
     </form>
   );
 }

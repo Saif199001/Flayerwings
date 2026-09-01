@@ -1,399 +1,772 @@
-/* Premium homepage hero — scoped to the home hero only. */
+/* ==========================================================================
+   FLAYER WINGS — ULTRA-PREMIUM COMPACT AI/SAAS HERO
+   Scoped strictly to .app-shell .hero-section
+   ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. Hero Container & Atmospheric Environment
+   -------------------------------------------------------------------------- */
 .app-shell .hero-section {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  min-height: min(820px, calc(100svh - 72px));
-  padding-top: clamp(54px, 7vw, 92px);
-  padding-bottom: clamp(58px, 7vw, 86px);
-  background:
-    radial-gradient(circle at 76% 46%, rgba(31, 119, 255, .10), transparent 25%),
-    radial-gradient(circle at 91% 70%, rgba(160, 63, 255, .09), transparent 24%);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(20px, 3.5vw, 44px);
+  width: min(1200px, calc(100% - 48px));
+  min-height: clamp(480px, 60vh, 600px);
+  margin: 0 auto;
+  padding-top: clamp(24px, 3.5vw, 44px);
+  padding-bottom: clamp(28px, 3.8vw, 48px);
+  overflow: visible;
 }
 
-.app-shell .hero-section::before {
-  content: "";
+/* Atmospheric Lighting Gradients */
+.app-shell .hero-glow {
   position: absolute;
-  z-index: -2;
-  top: 16%;
-  right: -14%;
-  width: 720px;
-  height: 720px;
+  top: 5%;
+  left: -6%;
+  width: clamp(350px, 38vw, 550px);
+  height: clamp(350px, 38vw, 550px);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(39, 124, 255, .13), rgba(103, 75, 255, .06) 38%, transparent 70%);
-  filter: blur(28px);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(139, 92, 246, 0.06) 45%, transparent 70%);
+  filter: blur(70px);
   pointer-events: none;
-}
-
-.app-shell .hero-section::after {
-  content: "";
-  position: absolute;
   z-index: -2;
-  left: -12%;
-  right: -12%;
-  bottom: -22%;
-  height: 300px;
-  border-top: 1px solid rgba(56, 154, 255, .18);
-  border-radius: 50% 50% 0 0;
-  background: radial-gradient(ellipse at 35% 10%, rgba(20, 132, 255, .14), transparent 44%), radial-gradient(ellipse at 72% 0%, rgba(176, 63, 255, .14), transparent 45%);
-  transform: rotate(-2deg);
-  pointer-events: none;
 }
 
-.app-shell .hero-stars {
+.app-shell .hero-ambient-mesh {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .85;
-}
-
-.app-shell .hero-stars i {
-  position: absolute;
-  display: block;
-  width: 2px;
-  height: 2px;
+  top: -8%;
+  right: -4%;
+  width: clamp(380px, 42vw, 620px);
+  height: clamp(380px, 42vw, 620px);
   border-radius: 50%;
-  background: #bdeaff;
-  box-shadow: 0 0 10px rgba(80, 196, 255, .8);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, rgba(56, 189, 248, 0.05) 40%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -2;
 }
 
-.app-shell .hero-stars i:nth-child(1){top:18%;left:38%}
-.app-shell .hero-stars i:nth-child(2){top:29%;left:47%;width:3px;height:3px}
-.app-shell .hero-stars i:nth-child(3){top:12%;left:70%}
-.app-shell .hero-stars i:nth-child(4){top:38%;left:58%}
-.app-shell .hero-stars i:nth-child(5){top:52%;left:76%;width:3px;height:3px;background:#cba5ff;box-shadow:0 0 12px rgba(174,100,255,.85)}
-.app-shell .hero-stars i:nth-child(6){top:68%;left:63%}
-.app-shell .hero-stars i:nth-child(7){top:74%;left:84%;background:#d6a6ff;box-shadow:0 0 11px rgba(180,94,255,.8)}
-.app-shell .hero-stars i:nth-child(8){top:24%;left:81%}
-
+/* --------------------------------------------------------------------------
+   2. Hero Content (Typography, Eyebrow & Actions)
+   -------------------------------------------------------------------------- */
 .app-shell .hero-content {
   position: relative;
   z-index: 3;
-  align-self: center;
-  max-width: 650px;
-  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 620px;
+  padding: 0;
 }
 
-.app-shell .hero-content .hero-eyebrow {
-  min-height: 40px;
-  margin-bottom: 26px;
-  padding: 0 16px;
-  border-color: rgba(73, 145, 255, .34);
-  background: rgba(6, 17, 50, .46);
-  color: #b8c8e3;
-  box-shadow: inset 0 1px rgba(255,255,255,.055), 0 8px 28px rgba(0,0,0,.12);
-  letter-spacing: .17em;
-}
-
-.app-shell .hero-content .hero-eyebrow span {
-  display: none;
-}
-
-.app-shell .hero-content .hero-eyebrow::before {
-  width: 7px;
-  height: 7px;
-  margin-right: 10px;
-  background: #54d9ff;
-  box-shadow: 0 0 13px rgba(84,217,255,.85);
-}
-
-.app-shell .hero-content h1 {
-  max-width: 690px;
-  margin: 0;
-  color: #f5f8ff;
-  font-size: clamp(78px, 7.7vw, 116px);
-  line-height: .86;
-  letter-spacing: -.085em;
-  text-wrap: balance;
-}
-
-.app-shell .hero-content h1 span {
-  display: inline-block;
-  padding-right: .035em;
-  background: linear-gradient(103deg, #35c4ff 0%, #358cff 35%, #7b6bff 67%, #c148f4 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 8px 25px rgba(76, 98, 255, .10));
-}
-
-.app-shell .hero-content .hero-copy {
-  max-width: 590px;
-  margin-top: 34px;
-  color: #aebdd7;
-  font-size: 17px;
-  line-height: 1.72;
-  letter-spacing: -.02em;
-}
-
-.app-shell .hero-content .hero-actions {
-  gap: 14px;
-  margin-top: 31px;
-}
-
-.app-shell .hero-content .hero-actions .button {
-  min-height: 58px;
-  padding: 0 27px;
-  border-radius: 999px;
-  font-size: 13px;
-  letter-spacing: -.015em;
-}
-
-.app-shell .hero-content .hero-actions .button-primary {
-  min-width: 210px;
-  border: 1px solid rgba(177, 202, 255, .30);
-  background: linear-gradient(105deg, #119cf2 0%, #397df5 34%, #765cf1 69%, #c13ef0 100%);
-  box-shadow: inset 0 1px rgba(255,255,255,.20), 0 14px 36px rgba(65, 84, 231, .25), 0 0 34px rgba(48, 126, 255, .10);
-}
-
-.app-shell .hero-content .hero-actions .button-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: inset 0 1px rgba(255,255,255,.25), 0 18px 40px rgba(65, 84, 231, .34), 0 0 42px rgba(48, 126, 255, .14);
-}
-
-.app-shell .hero-content .hero-actions .button-secondary {
-  min-width: 210px;
-  border: 1px solid rgba(69, 150, 255, .48);
-  background: rgba(5, 16, 50, .40);
-  box-shadow: inset 0 1px rgba(255,255,255,.04);
-}
-
-.app-shell .hero-content .hero-actions .button-secondary:hover {
-  border-color: rgba(85, 195, 255, .72);
-  background: rgba(12, 32, 78, .54);
-  transform: translateY(-2px);
-}
-
-.app-shell .hero-content .hero-trust {
-  gap: 10px;
-  margin-top: 27px;
-}
-
-.app-shell .hero-content .hero-trust span {
-  min-height: 31px;
-  padding: 0 11px;
-  border-color: rgba(92, 157, 234, .14);
-  background: rgba(5, 16, 45, .25);
-  color: #8398bd;
-  font-size: 9px;
-  letter-spacing: .02em;
-}
-
-.app-shell .hero-content .hero-trust span::before {
-  width: 4px;
-  height: 4px;
-  background: #63d9ff;
-  box-shadow: 0 0 9px rgba(99,217,255,.55);
-}
-
-.app-shell .hero-orbit {
-  position: relative;
-  align-self: center;
-  justify-self: center;
-  width: min(560px, 44vw);
-  aspect-ratio: 1;
-  height: auto;
-  margin: 0;
-  filter: drop-shadow(0 28px 48px rgba(0,0,0,.20));
-}
-
-.app-shell .hero-orbit::before {
-  content: "";
-  position: absolute;
-  z-index: -3;
-  inset: 10%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(37, 138, 255, .25), rgba(85, 82, 255, .12) 40%, transparent 70%);
-  filter: blur(26px);
-}
-
-.app-shell .orbit-grid {
-  inset: 15%;
-  border-color: rgba(91, 164, 255, .10);
-  background-size: 26px 26px;
-  opacity: .58;
-}
-
-.app-shell .orbit-ring { inset: 4%; border-color: rgba(62, 197, 255, .35); transform: rotate(-16deg) scaleX(.79); }
-.app-shell .ring-two { inset: 13%; border-color: rgba(151, 89, 255, .33); transform: rotate(31deg) scaleX(.73); }
-.app-shell .ring-three { inset: 23%; border-color: rgba(63, 172, 255, .25); transform: rotate(70deg) scaleX(.62); }
-.app-shell .ring-four { inset: 32%; border-color: rgba(190, 87, 255, .24); transform: rotate(-50deg) scaleX(.72); }
-.app-shell .ring-five { position: absolute; inset: 41%; border: 1px solid rgba(71, 168, 255, .16); border-radius: 50%; transform: rotate(15deg) scaleX(.84); pointer-events: none; }
-
-.app-shell .orbit-circuit { z-index: 1; background: linear-gradient(90deg, transparent, rgba(65, 194, 255, .60), transparent); }
-.app-shell .circuit-one { top: 30%; left: 2%; width: 40%; transform: rotate(23deg); }
-.app-shell .circuit-two { right: 2%; bottom: 31%; width: 38%; transform: rotate(-27deg); }
-
-.app-shell .orbit-node { width: 7px; height: 7px; border: 1px solid rgba(221,247,255,.85); box-shadow: 0 0 16px rgba(65,196,255,.85); }
-.app-shell .node-one { top: 20%; left: 20%; }
-.app-shell .node-two { top: 15%; right: 20%; background: #c37aff; box-shadow: 0 0 16px rgba(195,122,255,.85); }
-.app-shell .node-three { right: 14%; bottom: 24%; }
-.app-shell .node-four { bottom: 18%; left: 22%; background: #9e7cff; box-shadow: 0 0 16px rgba(158,124,255,.75); }
-.app-shell .node-five { top: 48%; left: 7%; background: #61e4ff; }
-.app-shell .node-six { right: 7%; top: 56%; background: #cf72ff; box-shadow: 0 0 16px rgba(207,114,255,.78); }
-
-.app-shell .orbit-card {
-  position: absolute;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 10px;
+/* Status Pill / Eyebrow */
+.app-shell .hero-eyebrow {
+  display: inline-flex;
   align-items: center;
-  width: 150px;
-  min-height: 78px;
-  padding: 13px 14px;
-  border: 1px solid rgba(80, 158, 255, .32);
-  border-radius: 15px;
-  background: linear-gradient(145deg, rgba(11, 34, 79, .76), rgba(5, 14, 43, .78));
-  box-shadow: inset 0 1px rgba(255,255,255,.07), 0 18px 34px rgba(0,0,0,.20), 0 0 28px rgba(42,111,255,.08);
+  gap: 8px;
+  min-height: 30px;
+  margin: 0 0 14px;
+  padding: 0 12px;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 999px;
+  background: rgba(7, 19, 61, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 16px rgba(0, 0, 0, 0.25);
+  color: #38bdf8;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
-.app-shell .orbit-card-icon {
-  grid-row: 1 / span 2;
+.app-shell .hero-eyebrow-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: fw-dot-pulse 2.5s ease-in-out infinite;
+}
+
+/* Editorial Headline */
+.app-shell .hero-headline {
+  margin: 0;
+  color: #f8fbff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(48px, 5.4vw, 82px);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.app-shell .hero-gradient-text {
+  display: inline-block;
+  background: linear-gradient(130deg, #38bdf8 0%, #60a5fa 35%, #a78bfa 70%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.04em;
+  filter: drop-shadow(0 2px 14px rgba(56, 189, 248, 0.25));
+}
+
+/* Refined Supporting Paragraph */
+.app-shell .hero-copy {
+  max-width: 500px;
+  margin: 16px 0 0;
+  color: #9ab0d4;
+  font-family: "Manrope", sans-serif;
+  font-size: 15.5px;
+  font-weight: 450;
+  line-height: 1.62;
+  letter-spacing: -0.01em;
+}
+
+/* Call to Action Buttons */
+.app-shell .hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.app-shell .hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #168fe9 0%, #5f67ee 52%, #a44ff0 100%);
+  color: #ffffff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px rgba(75, 72, 220, 0.32);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-shell .hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 12px 30px rgba(75, 72, 220, 0.45);
+}
+
+.app-shell .hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid rgba(126, 164, 220, 0.24);
+  border-radius: 999px;
+  background: rgba(8, 20, 52, 0.5);
+  color: #eaf2ff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, background 0.2s;
+}
+
+.app-shell .hero-btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(14, 34, 82, 0.65);
+  color: #ffffff;
+}
+
+.app-shell .btn-arrow,
+.app-shell .btn-arrow-diag {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.app-shell .hero-btn-primary:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+.app-shell .hero-btn-secondary:hover .btn-arrow-diag {
+  transform: translate(2px, -2px);
+}
+
+/* Trust Badges */
+.app-shell .hero-trust-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.app-shell .hero-trust-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid rgba(126, 164, 220, 0.16);
+  border-radius: 999px;
+  background: rgba(7, 18, 54, 0.45);
+  color: #9ab0d4;
+  font-size: 11px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.app-shell .badge-bullet {
+  font-style: normal;
+  font-size: 9.5px;
+  color: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   3. Orbital Technology Visual Core
+   -------------------------------------------------------------------------- */
+.app-shell .hero-orbit {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(79, 176, 255, .25);
-  border-radius: 10px;
-  background: rgba(12, 35, 81, .72);
-  color: #69d8ff;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  width: min(390px, 35vw);
+  max-width: 390px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  isolation: isolate;
 }
 
-.app-shell .orbit-card strong { color: #edf6ff; font-size: 13px; font-weight: 600; letter-spacing: -.02em; }
-.app-shell .orbit-card small { color: #7890b6; font-size: 9px; line-height: 1.25; }
-.app-shell .orbit-card-code .orbit-card-icon,.app-shell .orbit-card-cloud .orbit-card-icon { color: #c78aff; border-color: rgba(186, 105, 255, .28); }
-.app-shell .orbit-card-data .orbit-card-icon { color: #65e4ff; }
-
-.app-shell .orbit-card-ai { top: 7%; left: 17%; }
-.app-shell .orbit-card-code { top: 18%; right: -2%; width: 160px; }
-.app-shell .orbit-card-data { left: 6%; bottom: 13%; }
-.app-shell .orbit-card-cloud { right: -1%; bottom: 10%; }
-
-.app-shell .orbit-logo {
-  z-index: 6;
-  width: 220px;
-  height: 220px;
-  border: 1px solid rgba(91, 184, 255, .46);
-  border-radius: 48px;
-  background: linear-gradient(145deg, rgba(17, 47, 105, .76), rgba(3, 11, 37, .90));
-  box-shadow: inset 0 1px rgba(255,255,255,.11), 0 0 0 10px rgba(62, 119, 255, .045), 0 0 72px rgba(38, 135, 255, .26), 0 0 115px rgba(158, 74, 255, .12), 0 28px 65px rgba(0,0,0,.34);
-}
-
-.app-shell .orbit-logo::before {
-  inset: 11px;
-  border: 1px solid rgba(117, 201, 255, .16);
-  border-radius: 37px;
-}
-
-.app-shell .orbit-logo::after {
-  content: "";
+/* Background Soft Atmosphere */
+.app-shell .orbit-ambient {
   position: absolute;
-  inset: -4px;
-  border: 1px solid rgba(91, 117, 255, .18);
-  border-radius: 52px;
+  inset: 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, rgba(139, 92, 246, 0.12) 45%, transparent 72%);
+  filter: blur(28px);
+  z-index: -2;
+  animation: fw-orbit-ambient-pulse 7s ease-in-out infinite;
+}
+
+.app-shell .orbit-grid-matrix {
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  border: 1px dashed rgba(56, 189, 248, 0.16);
+  background: radial-gradient(circle at center, transparent 35%, rgba(7, 19, 61, 0.35) 100%);
   pointer-events: none;
+  z-index: -1;
+}
+
+/* Precision Concentric / Elliptical Orbit Rings */
+.app-shell .orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.app-shell .ring-one {
+  inset: 2%;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  transform: rotate(-18deg) scaleX(0.88);
+  animation: fw-orbit-spin-slow 44s linear infinite;
+}
+
+.app-shell .ring-two {
+  inset: 13%;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  transform: rotate(32deg) scaleX(0.84);
+  animation: fw-orbit-spin-reverse 34s linear infinite;
+}
+
+.app-shell .ring-three {
+  inset: 24%;
+  border: 1px dashed rgba(56, 189, 248, 0.18);
+  transform: rotate(-55deg) scaleX(0.78);
+  animation: fw-orbit-spin-slow 28s linear infinite;
+}
+
+.app-shell .ring-four {
+  inset: 34%;
+  border: 1px solid rgba(244, 114, 182, 0.18);
+  transform: rotate(45deg) scaleX(0.90);
+  animation: fw-orbit-spin-reverse 22s linear infinite;
+}
+
+/* Connecting Circuit Lines */
+.app-shell .orbit-circuit {
+  position: absolute;
+  height: 1px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.app-shell .circuit-one {
+  top: 30%;
+  left: 4%;
+  width: 36%;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.6), transparent);
+  transform: rotate(18deg);
+}
+
+.app-shell .circuit-two {
+  bottom: 28%;
+  right: 4%;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6));
+  transform: rotate(-22deg);
+}
+
+/* Technology Data Nodes */
+.app-shell .orbit-node {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  animation: fw-node-glow 3.2s ease-in-out infinite;
+}
+
+.app-shell .node-one {
+  top: 14%;
+  left: 22%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.app-shell .node-two {
+  top: 16%;
+  right: 20%;
+  background: #c084fc;
+  box-shadow: 0 0 10px #c084fc;
+  animation-delay: -1.2s;
+}
+
+.app-shell .node-three {
+  bottom: 18%;
+  right: 16%;
+  background: #60a5fa;
+  box-shadow: 0 0 10px #60a5fa;
+  animation-delay: -2.4s;
+}
+
+.app-shell .node-four {
+  bottom: 20%;
+  left: 18%;
+  background: #f472b6;
+  box-shadow: 0 0 10px #f472b6;
+  animation-delay: -0.7s;
+}
+
+/* --------------------------------------------------------------------------
+   4. Capability Markers (AI, Code, Analytics, Cloud)
+   -------------------------------------------------------------------------- */
+.app-shell .orbit-card {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 122px;
+  padding: 7px 10px;
+  border: 1px solid rgba(126, 164, 220, 0.24);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(8, 22, 64, 0.88), rgba(4, 12, 38, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 24px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s;
+}
+
+.app-shell .orbit-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.5);
+}
+
+.app-shell .orbit-card-icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 7px;
+  background: rgba(10, 28, 77, 0.75);
+  color: #38bdf8;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.app-shell .orbit-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell .orbit-card strong {
+  color: #f8fbff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.app-shell .orbit-card small {
+  color: #92a7cc;
+  font-family: "Manrope", sans-serif;
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Individual Card Placements & Accents */
+.app-shell .orbit-card-ai {
+  top: 4%;
+  left: 8%;
+}
+.app-shell .orbit-card-ai .orbit-card-icon {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.app-shell .orbit-card-code {
+  top: 12%;
+  right: -4%;
+}
+.app-shell .orbit-card-code .orbit-card-icon {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+.app-shell .orbit-card-data {
+  bottom: 10%;
+  left: 2%;
+}
+.app-shell .orbit-card-data .orbit-card-icon {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.app-shell .orbit-card-cloud {
+  bottom: 6%;
+  right: -2%;
+}
+.app-shell .orbit-card-cloud .orbit-card-icon {
+  color: #f472b6;
+  border-color: rgba(244, 114, 182, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   5. Central Identity: Flayer Wings Logo
+   -------------------------------------------------------------------------- */
+.app-shell .orbit-logo {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 140px;
+  height: 140px;
+  border: 1px solid rgba(126, 164, 220, 0.32);
+  border-radius: 32px;
+  background: linear-gradient(145deg, rgba(8, 22, 64, 0.9), rgba(3, 10, 32, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 6px rgba(56, 189, 248, 0.05),
+    0 0 45px rgba(56, 189, 248, 0.22),
+    0 0 70px rgba(139, 92, 246, 0.14),
+    0 20px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.app-shell .orbit-logo-glow {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(139, 92, 246, 0.18) 50%, transparent 70%);
+  filter: blur(14px);
+  z-index: 1;
+  pointer-events: none;
+  animation: fw-logo-inner-pulse 5s ease-in-out infinite;
 }
 
 .app-shell .orbit-logo img {
-  width: 184px;
-  height: 184px;
-  border-radius: 30px;
-}
-
-.app-shell .principles-strip {
   position: relative;
-  z-index: 4;
-  margin-top: -2px;
-  border-color: rgba(65, 150, 255, .19);
-  border-radius: 22px;
-  background: linear-gradient(120deg, rgba(5, 18, 52, .64), rgba(10, 12, 49, .48));
-  box-shadow: inset 0 1px rgba(255,255,255,.035), 0 20px 55px rgba(0,0,0,.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
+  width: 114px;
+  height: 114px;
+  display: block;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-.app-shell .principles-strip article { min-height: 104px; padding: 23px 24px; border-right-color: rgba(75, 151, 228, .15); }
-.app-shell .principles-strip strong { font-family: "Space Grotesk", sans-serif; font-size: 13px; letter-spacing: -.01em; }
-.app-shell .principles-strip span { color: #8195b9; font-size: 10px; }
+/* --------------------------------------------------------------------------
+   6. Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes fw-dot-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 10px #38bdf8; }
+}
 
-@media (max-width: 1180px) {
-  .app-shell .hero-section { grid-template-columns: minmax(0, 1fr) minmax(360px, .88fr); gap: 24px; }
-  .app-shell .hero-content h1 { font-size: clamp(72px, 7.8vw, 100px); }
-  .app-shell .hero-orbit { width: min(500px, 43vw); }
-  .app-shell .orbit-card { transform: scale(.92); transform-origin: center; }
+@keyframes fw-orbit-ambient-pulse {
+  0%, 100% { opacity: 0.65; transform: scale(0.96); }
+  50% { opacity: 0.95; transform: scale(1.04); }
+}
+
+@keyframes fw-orbit-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fw-orbit-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes fw-node-glow {
+  0%, 100% { opacity: 0.45; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes fw-logo-inner-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.95); }
+  50% { opacity: 0.95; transform: scale(1.05); }
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive Breakpoints
+   Targets: 1440px, 1280px, 1024px, 860px, 768px, 560px, 390px
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1280px) {
+  .app-shell .hero-section {
+    gap: 32px;
+    min-height: 520px;
+  }
+  .app-shell .hero-headline {
+    font-size: clamp(44px, 5vw, 74px);
+  }
+  .app-shell .hero-orbit {
+    width: min(360px, 36vw);
+  }
+  .app-shell .orbit-logo {
+    width: 130px;
+    height: 130px;
+    border-radius: 28px;
+  }
+  .app-shell .orbit-logo img {
+    width: 106px;
+    height: 106px;
+    border-radius: 18px;
+  }
 }
 
 @media (max-width: 1024px) {
-  .app-shell .hero-section { grid-template-columns: minmax(0, 1.02fr) minmax(330px, .82fr); min-height: 720px; }
-  .app-shell .hero-content h1 { font-size: clamp(68px, 8vw, 88px); }
-  .app-shell .hero-content .hero-copy { font-size: 15px; }
-  .app-shell .hero-orbit { width: min(450px, 43vw); }
-  .app-shell .orbit-logo { width: 188px; height: 188px; border-radius: 43px; }
-  .app-shell .orbit-logo img { width: 158px; height: 158px; border-radius: 27px; }
-  .app-shell .orbit-card { width: 128px; min-height: 68px; padding: 10px; grid-template-columns: 30px 1fr; column-gap: 8px; }
-  .app-shell .orbit-card-icon { width: 28px; height: 28px; border-radius: 8px; font-size: 11px; }
-  .app-shell .orbit-card strong { font-size: 11px; }
-  .app-shell .orbit-card small { font-size: 8px; }
+  .app-shell .hero-section {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 24px;
+    min-height: 480px;
+    padding-top: 24px;
+    padding-bottom: 32px;
+  }
+  .app-shell .hero-headline {
+    font-size: clamp(42px, 4.8vw, 66px);
+  }
+  .app-shell .hero-copy {
+    font-size: 14.5px;
+    margin-top: 14px;
+  }
+  .app-shell .hero-orbit {
+    width: min(330px, 35vw);
+  }
+  .app-shell .orbit-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 26px;
+  }
+  .app-shell .orbit-logo img {
+    width: 98px;
+    height: 98px;
+    border-radius: 16px;
+  }
+  .app-shell .orbit-card {
+    width: 110px;
+    padding: 6px 8px;
+  }
+  .app-shell .orbit-card-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+  .app-shell .orbit-card strong {
+    font-size: 10px;
+  }
+  .app-shell .orbit-card small {
+    font-size: 8px;
+  }
 }
 
 @media (max-width: 860px) {
-  .app-shell .hero-section { display: flex; flex-direction: column; gap: 0; min-height: 0; padding-top: 48px; padding-bottom: 58px; }
-  .app-shell .hero-content { order: 1; max-width: 720px; padding-top: 0; }
-  .app-shell .hero-content h1 { font-size: clamp(66px, 11.5vw, 92px); }
-  .app-shell .hero-content .hero-copy { max-width: 650px; }
-  .app-shell .hero-orbit { order: 2; width: min(520px, 88vw); margin: 42px auto 8px; }
-  .app-shell .orbit-card { transform: scale(.96); }
-  .app-shell .principles-strip { border-radius: 20px; }
+  .app-shell .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+    min-height: auto;
+    padding-top: 28px;
+    padding-bottom: 36px;
+  }
+  .app-shell .hero-content {
+    align-items: center;
+    max-width: 600px;
+  }
+  .app-shell .hero-headline {
+    font-size: clamp(44px, 8vw, 68px);
+  }
+  .app-shell .hero-copy {
+    max-width: 500px;
+    margin-inline: auto;
+    font-size: 15px;
+  }
+  .app-shell .hero-actions {
+    justify-content: center;
+  }
+  .app-shell .hero-trust-badges {
+    justify-content: center;
+  }
+  .app-shell .hero-orbit {
+    width: min(340px, 84vw);
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 560px) {
-  .app-shell .hero-section { padding-top: 34px; padding-bottom: 46px; }
-  .app-shell .hero-content .hero-eyebrow { min-height: 34px; margin-bottom: 21px; padding: 0 12px; font-size: 9px; }
-  .app-shell .hero-content h1 { font-size: clamp(56px, 16vw, 74px); line-height: .88; letter-spacing: -.075em; }
-  .app-shell .hero-content .hero-copy { margin-top: 25px; font-size: 14px; line-height: 1.7; }
-  .app-shell .hero-content .hero-actions { flex-direction: column; align-items: stretch; margin-top: 26px; }
-  .app-shell .hero-content .hero-actions .button,
-  .app-shell .hero-content .hero-actions .button-primary,
-  .app-shell .hero-content .hero-actions .button-secondary { width: 100%; min-width: 0; min-height: 52px; }
-  .app-shell .hero-content .hero-trust { gap: 7px; margin-top: 20px; }
-  .app-shell .hero-content .hero-trust span { min-height: 29px; font-size: 9px; }
-  .app-shell .hero-orbit { width: min(370px, 96vw); margin-top: 34px; }
-  .app-shell .orbit-logo { width: 150px; height: 150px; border-radius: 36px; }
-  .app-shell .orbit-logo::before { border-radius: 27px; }
-  .app-shell .orbit-logo::after { border-radius: 40px; }
-  .app-shell .orbit-logo img { width: 126px; height: 126px; border-radius: 21px; }
-  .app-shell .orbit-card { width: 104px; min-height: 54px; padding: 7px; grid-template-columns: 23px 1fr; column-gap: 6px; border-radius: 11px; }
-  .app-shell .orbit-card-icon { width: 22px; height: 22px; border-radius: 6px; font-size: 8px; }
-  .app-shell .orbit-card strong { font-size: 8px; }
-  .app-shell .orbit-card small { font-size: 6px; }
-  .app-shell .orbit-card-ai { top: 8%; left: 7%; }
-  .app-shell .orbit-card-code { top: 20%; right: -1%; }
-  .app-shell .orbit-card-data { left: 4%; bottom: 12%; }
-  .app-shell .orbit-card-cloud { right: 0; bottom: 8%; }
-  .app-shell .orbit-node { width: 5px; height: 5px; }
-  .app-shell .principles-strip { width: calc(100% - 28px); grid-template-columns: 1fr; border-radius: 18px; }
-  .app-shell .principles-strip article { min-height: 82px; padding: 18px 20px; border-right: 0 !important; border-bottom: 1px solid rgba(75,151,228,.12); }
-  .app-shell .principles-strip article:last-child { border-bottom: 0; }
+  .app-shell .hero-section {
+    width: min(100% - 32px, 1200px);
+    padding-top: 20px;
+    padding-bottom: 28px;
+    gap: 28px;
+  }
+  .app-shell .hero-eyebrow {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 9.5px;
+    margin-bottom: 12px;
+  }
+  .app-shell .hero-headline {
+    font-size: clamp(40px, 12vw, 56px);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+  }
+  .app-shell .hero-copy {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .app-shell .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .app-shell .hero-btn-primary,
+  .app-shell .hero-btn-secondary {
+    width: 100%;
+    min-height: 46px;
+    font-size: 13px;
+  }
+  .app-shell .hero-trust-badges {
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .app-shell .hero-trust-badges span {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+  .app-shell .hero-orbit {
+    width: min(290px, 90vw);
+  }
+  .app-shell .orbit-logo {
+    width: 110px;
+    height: 110px;
+    border-radius: 24px;
+  }
+  .app-shell .orbit-logo img {
+    width: 90px;
+    height: 90px;
+    border-radius: 14px;
+  }
+  .app-shell .orbit-card {
+    width: 96px;
+    padding: 5px 6px;
+    gap: 5px;
+    border-radius: 10px;
+  }
+  .app-shell .orbit-card-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    font-size: 8px;
+  }
+  .app-shell .orbit-card strong {
+    font-size: 9px;
+  }
+  .app-shell .orbit-card small {
+    font-size: 7px;
+  }
+  .app-shell .orbit-card-ai { top: 4%; left: 2%; }
+  .app-shell .orbit-card-code { top: 10%; right: -2%; }
+  .app-shell .orbit-card-data { bottom: 8%; left: 0%; }
+  .app-shell .orbit-card-cloud { bottom: 4%; right: -1%; }
 }
 
 @media (max-width: 390px) {
-  .app-shell .hero-section { padding-top: 28px; }
-  .app-shell .hero-content h1 { font-size: 55px; }
-  .app-shell .hero-content .hero-copy { font-size: 13px; }
-  .app-shell .hero-orbit { width: 340px; max-width: 96vw; }
-  .app-shell .orbit-card { transform: scale(.90); }
+  .app-shell .hero-section {
+    padding-top: 16px;
+    padding-bottom: 24px;
+  }
+  .app-shell .hero-headline {
+    font-size: 38px;
+  }
+  .app-shell .hero-copy {
+    font-size: 13px;
+  }
+  .app-shell .hero-orbit {
+    width: 260px;
+  }
+  .app-shell .orbit-logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 20px;
+  }
+  .app-shell .orbit-logo img {
+    width: 78px;
+    height: 78px;
+    border-radius: 12px;
+  }
 }
 
+/* --------------------------------------------------------------------------
+   8. Reduced Motion Accessibility
+   -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .app-shell .hero-content .hero-actions .button,
-  .app-shell .orbit-card { transition: none; }
+  .app-shell .hero-orbit *,
+  .app-shell .hero-eyebrow-dot,
+  .app-shell .hero-btn-primary,
+  .app-shell .hero-btn-secondary,
+  .app-shell .orbit-card {
+    animation: none !important;
+    transition: none !important;
+  }
 }

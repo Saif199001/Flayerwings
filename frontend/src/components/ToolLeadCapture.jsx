@@ -27,33 +27,98 @@ export default function ToolLeadCapture({ slug, toolName, resultSummary }) {
 
   if (state === "success") {
     return (
-      <div className="tool-lead-success">
-        <p className="eyebrow">REQUEST RECEIVED</p>
-        <h3>We'll take it from here.</h3>
-        <p>Your details are saved. We'll review your request and follow up with a practical next step.</p>
+      <div className="tool-lead-success-card" role="status">
+        <div className="success-icon-badge">✓</div>
+        <span className="eyebrow-cyan">REQUEST RECEIVED</span>
+        <h3 className="success-heading">We'll take it from here.</h3>
+        <p className="success-desc">
+          Your details are saved. We'll review your request and follow up with a practical next step.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="tool-lead-capture">
-      <div>
-        <p className="eyebrow">GO A STEP FURTHER</p>
-        <h3>Want a detailed recommendation?</h3>
-        <p>Leave your details and we'll turn this free result into a more useful next-step recommendation.</p>
+    <div className="tool-lead-capture-card">
+      <div className="lead-capture-header">
+        <span className="eyebrow-cyan">GO A STEP FURTHER</span>
+        <h3 className="lead-capture-title">Want a detailed custom recommendation?</h3>
+        <p className="lead-capture-desc">
+          Leave your details and our team will turn this automated result into a personalized, actionable strategy review.
+        </p>
       </div>
-      <form onSubmit={submit}>
-        <div className="form-grid">
-          <label>Name<input required value={form.name} onChange={(e) => update("name", e.target.value)} /></label>
-          <label>Email<input required type="email" value={form.email} onChange={(e) => update("email", e.target.value)} /></label>
-          <label>WhatsApp / Phone<input value={form.phone} onChange={(e) => update("phone", e.target.value)} /></label>
-          <label>Business<input value={form.company} onChange={(e) => update("company", e.target.value)} /></label>
+
+      <form className="lead-capture-form" onSubmit={submit}>
+        <div className="lead-form-grid">
+          <div className="form-group">
+            <label htmlFor="lead-name">Your Name</label>
+            <input
+              id="lead-name"
+              required
+              placeholder="e.g. Rahul Sharma"
+              value={form.name}
+              onChange={(e) => update("name", e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lead-email">Email Address</label>
+            <input
+              id="lead-email"
+              required
+              type="email"
+              placeholder="e.g. rahul@company.com"
+              value={form.email}
+              onChange={(e) => update("email", e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lead-phone">WhatsApp / Phone</label>
+            <input
+              id="lead-phone"
+              placeholder="e.g. +91 98765 43210"
+              value={form.phone}
+              onChange={(e) => update("phone", e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lead-company">Business / Brand</label>
+            <input
+              id="lead-company"
+              placeholder="e.g. Acme Tech Solutions"
+              value={form.company}
+              onChange={(e) => update("company", e.target.value)}
+            />
+          </div>
         </div>
-        <button className="button button-primary" disabled={state === "loading"}>
-          {state === "loading" ? "Sending…" : "Get My Detailed Recommendation →"}
-        </button>
-        {state === "error" && <p className="form-error">We couldn't save your request. Please try again.</p>}
-        <small>We'll only use these details to respond to your request.</small>
+
+        <div className="lead-form-actions">
+          <button
+            className="button button-primary submit-btn lead-submit-btn"
+            disabled={state === "loading"}
+            type="submit"
+          >
+            {state === "loading" ? (
+              <span>Submitting Request...</span>
+            ) : (
+              <>
+                <span>Get My Detailed Recommendation</span>
+                <span className="btn-arrow" aria-hidden="true">→</span>
+              </>
+            )}
+          </button>
+          <small className="lead-privacy-note">
+            🛡 We respect your privacy. No spam — strictly relevant recommendations.
+          </small>
+        </div>
+
+        {state === "error" && (
+          <div className="form-error-banner" role="alert">
+            We couldn't save your request right now. Please check your connection and try again.
+          </div>
+        )}
       </form>
     </div>
   );
