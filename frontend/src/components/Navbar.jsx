@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const links = [["Solutions", "/services"], ["Product", "/product"], ["Free Tools", "/tools"], ["About", "/about"]];
+const links = [["Solutions", "/services"], ["Product", "/product"], ["About", "/about"]];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
