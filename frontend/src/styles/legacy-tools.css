@@ -1,0 +1,6 @@
+/* Legacy free-tool UI is intentionally retired. */
+.tools-showcase-section,
+a[href^="/tools"],
+#hero .hero-btn-secondary {
+  display: none !important;
+}
