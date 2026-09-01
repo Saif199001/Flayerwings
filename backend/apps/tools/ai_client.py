@@ -10,19 +10,36 @@ class AIProviderError(RuntimeError):
 
 
 def ai_configured():
+    provider = os.getenv("AI_PROVIDER", "gemini").strip().lower()
+    if provider == "gemini":
+        return bool(os.getenv("AI_API_KEY") or os.getenv("GEMINI_API_KEY"))
     return bool(os.getenv("AI_API_KEY") or os.getenv("OPENAI_API_KEY"))
 
 
+def _provider():
+    return os.getenv("AI_PROVIDER", "gemini").strip().lower()
+
+
 def _api_key():
+    if _provider() == "gemini":
+        return os.getenv("AI_API_KEY") or os.getenv("GEMINI_API_KEY")
     return os.getenv("AI_API_KEY") or os.getenv("OPENAI_API_KEY")
 
 
 def _base_url():
-    return os.getenv("AI_API_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+    configured = os.getenv("AI_API_BASE_URL")
+    if configured:
+        return configured.rstrip("/")
+    if _provider() == "gemini":
+        return "https://generativelanguage.googleapis.com/v1beta/openai"
+    return "https://api.openai.com/v1"
 
 
 def _model():
-    return os.getenv("AI_MODEL", "gpt-4.1-mini")
+    configured = os.getenv("AI_MODEL")
+    if configured:
+        return configured
+    return "gemini-2.5-flash" if _provider() == "gemini" else "gpt-4.1-mini"
 
 
 def _extract_json(text):
