@@ -14,15 +14,29 @@ async function request(path, options = {}) {
   return data;
 }
 
+export function getToolVisitorId() {
+  const key = "fw_tool_visitor_id";
+  let id = localStorage.getItem(key);
+  if (!id) { id = crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`; localStorage.setItem(key, id); }
+  return id;
+}
+
+export function getAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    source: params.get("utm_source") || "",
+    medium: params.get("utm_medium") || "",
+    campaign: params.get("utm_campaign") || "",
+    landing_path: window.location.pathname,
+    referrer: document.referrer || "",
+  };
+}
+
 export function createLead(payload) { return request("/leads/", { method: "POST", body: JSON.stringify(payload) }); }
 export function getProjects() { return request("/projects/"); }
-
 export function listTools() { return request("/tools/"); }
 export function getToolTemplates(slug) { return request(`/tools/templates/${slug}/`); }
 export function createToolDocument(payload) { return request("/tools/documents/", { method: "POST", body: JSON.stringify(payload) }); }
 export function getToolDocuments(visitorId) { return request(`/tools/documents/?visitor_id=${encodeURIComponent(visitorId)}`); }
 export function trackToolEvent(payload) { return request("/tools/events/", { method: "POST", body: JSON.stringify(payload) }); }
-export function getToolPdfUrl(id, visitorId) {
-  const suffix = visitorId ? `?visitor_id=${encodeURIComponent(visitorId)}` : "";
-  return `${API_BASE_URL}/tools/documents/${id}/pdf/${suffix}`;
-}
+export function getToolPdfUrl(id, visitorId) { const suffix = visitorId ? `?visitor_id=${encodeURIComponent(visitorId)}` : ""; return `${API_BASE_URL}/tools/documents/${id}/pdf/${suffix}`; }
