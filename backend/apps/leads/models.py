@@ -26,6 +26,12 @@ class Lead(models.Model):
     social_profile_url = models.URLField(blank=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
     notes = models.TextField(blank=True)
+    tool_slug = models.CharField(max_length=80, blank=True, db_index=True)
+    tool_document_id = models.UUIDField(null=True, blank=True, db_index=True)
+    visitor_id = models.CharField(max_length=100, blank=True, db_index=True)
+    session_id = models.CharField(max_length=100, blank=True, db_index=True)
+    landing_path = models.CharField(max_length=500, blank=True)
+    attribution = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -35,6 +41,7 @@ class Lead(models.Model):
             models.Index(fields=["status", "created_at"]),
             models.Index(fields=["lead_type", "created_at"]),
             models.Index(fields=["email"]),
+            models.Index(fields=["tool_slug", "created_at"]),
         ]
 
     def __str__(self):
