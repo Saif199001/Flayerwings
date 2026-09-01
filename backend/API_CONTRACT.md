@@ -21,7 +21,7 @@ Accepted fields:
 - `phone`
 - `company`
 - `website`
-- `lead_type`: `contact`, `social_audit`, `tool`, `project`
+- `lead_type`: `contact`, `social_audit`, `project`
 - `source`
 - `message`
 - `social_profile_url`
