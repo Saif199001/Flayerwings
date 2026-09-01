@@ -86,9 +86,6 @@ def _idea_is_usable(idea, data):
     if len(outline.split()) < 8:
         return False
 
-    # Long raw audience/industry descriptions are usually keyword stuffing.
-    # Short product/category phrases (for example "social media management")
-    # are legitimate editorial subjects and must remain usable when relevant.
     for field in ("audience", "industry"):
         value = str(data.get(field) or "").strip().lower()
         if len(value) >= 18 and value in title_lower:
@@ -163,6 +160,19 @@ IMPORTANT EDITORIAL RULES:
 Make the output specific enough that a content creator could start producing the posts immediately."""
 
     result = generate_json(AI_SYSTEM, prompt, temperature=0.8, max_tokens=5000)
+
+    # Keep concise, meaningful industry labels in at least one relevant idea.
+    # This improves contextual usefulness without injecting long keyword lists.
+    industry = str(data.get("industry") or "").strip()
+    if industry and len(industry.split()) <= 3 and isinstance(result, dict):
+        industry_lower = industry.lower()
+        for idea in result.get("ideas", []):
+            title = str(idea.get("title") or "")
+            outline = str(idea.get("outline") or "")
+            if industry_lower not in f"{title} {outline}".lower() and title:
+                idea["title"] = f"{title} for {industry} teams"
+                break
+
     if _validate_ideas(result, data):
         return result
 
