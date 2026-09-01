@@ -86,10 +86,17 @@ def _idea_is_usable(idea, data):
     if len(outline.split()) < 8:
         return False
 
-    for field in ("audience", "industry", "offer"):
+    # Long raw audience/industry descriptions are usually keyword stuffing.
+    # Short product/category phrases (for example "social media management")
+    # are legitimate editorial subjects and must remain usable when relevant.
+    for field in ("audience", "industry"):
         value = str(data.get(field) or "").strip().lower()
         if len(value) >= 18 and value in title_lower:
             return False
+
+    offer = str(data.get("offer") or "").strip().lower()
+    if len(offer) >= 40 and offer in title_lower:
+        return False
 
     angle_words = {
         "why", "how", "when", "what", "which", "before", "after", "mistake", "mistakes",
@@ -142,11 +149,11 @@ Then return JSON with exactly: business, audience, platform, goal, content_pilla
 Each idea must contain exactly: title, format, pillar, goal, hook, outline.
 
 IMPORTANT EDITORIAL RULES:
-1. Do NOT copy the audience, industry or offer field into titles. Translate the context into a specific customer problem or decision.
+1. Do NOT copy a long audience description or industry keyword dump into titles. Translate the context into a specific customer problem or decision. Short, meaningful product/category terms are allowed when they are the actual subject of the post.
 2. Do NOT make every idea about the product. Most ideas should teach, diagnose, compare, explain or help the audience make a decision; only some should directly connect to the offer.
 3. Every title needs a distinct angle and should sound like a real post someone would publish, not an AI content template.
-4. Never use generic title patterns such as “The 3 biggest…”, “Myth vs fact…”, “Behind the scenes…”, “Save-worthy checklist…”, or “Do not need more information…”.
-5. Do not stuff the business name, audience list, industry keywords or full offer description into titles.
+4. Do NOT use generic title patterns such as “The 3 biggest…”, “Myth vs fact…”, “Behind the scenes…”, “Save-worthy checklist…”, or “Do not need more information…”.
+5. Do not stuff the business name, audience list, industry keywords or full long offer description into titles.
 6. Hooks must create curiosity by naming a tension, mistake, overlooked detail, decision or useful promise — without fake statistics.
 7. Outlines must give concrete production beats: examples, questions to answer, steps to show, comparisons to make, or evidence to gather.
 8. Use exactly 10 materially different ideas and at least 7 different formats where appropriate.
@@ -180,7 +187,7 @@ Fix every problem below:
 - keep claims evidence-safe and never invent metrics or customer proof;
 - do not make every idea a sales pitch.
 
-Do not mention these repair instructions in the output."""
+Short product/category phrases may be retained when they are genuinely the topic of the idea. Do not mention these repair instructions in the output."""
     repaired = generate_json(AI_SYSTEM, repair_prompt, temperature=0.65, max_tokens=5000)
     if not _validate_ideas(repaired, data):
         raise AIProviderError("AI content ideas failed the quality contract")
