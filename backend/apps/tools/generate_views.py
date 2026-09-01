@@ -35,7 +35,8 @@ Caption: 120–220 words unless platform strongly calls for shorter copy. Start 
     if _bad_text(result["caption"]) or _bad_text(result["hook"]):
         raise AIProviderError("AI caption was too generic")
     result["cta"] = requested_cta if requested_cta else result["cta"]
-    result["platform"] = data.get("platform")
+    # Preserve the API's canonical display value instead of exposing the serializer's lowercase choice.
+    result["platform"] = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn", "twitter": "Twitter", "x": "X", "youtube": "YouTube", "tiktok": "TikTok"}.get(str(data.get("platform") or "").lower(), data.get("platform"))
     return result
 
 
@@ -75,7 +76,7 @@ class CaptionGenerateView(generics.GenericAPIView):
         try: result = _caption(data)
         except AIProviderError: result = generate_caption(**data)
         if data.get("cta"): result["cta"] = data["cta"]
-        result["platform"] = data.get("platform")
+        result["platform"] = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn", "twitter": "Twitter", "x": "X", "youtube": "YouTube", "tiktok": "TikTok"}.get(str(data.get("platform") or "").lower(), data.get("platform"))
         return Response(result)
 
 
