@@ -7,6 +7,11 @@ from .meta_client import MetaGraphError
 from .services import generate_caption, generate_content_ideas, run_social_audit
 from .tool_serializers import CaptionGenerateSerializer, ContentIdeasSerializer, SocialAuditSerializer
 
+PLATFORM_LABELS = {
+    "instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn",
+    "twitter": "Twitter", "x": "X", "youtube": "YouTube", "tiktok": "TikTok",
+}
+
 AI_SYSTEM = """You are a senior social-media strategist for Flayer Wings. Return JSON only.
 Reason from business context, audience, offer, goal and platform — never fill templates.
 Never invent metrics, testimonials, customer results, awards, clients, platform data or factual claims.
@@ -18,6 +23,10 @@ GENERIC_PATTERNS = ("the 3 biggest", "behind the scenes:", "myth vs fact:", "sav
 def _bad_text(text):
     value = str(text or "").lower()
     return any(pattern in value for pattern in GENERIC_PATTERNS)
+
+
+def _platform_label(value):
+    return PLATFORM_LABELS.get(str(value or "").strip().lower(), value)
 
 
 def _caption(data):
@@ -35,8 +44,9 @@ Caption: 120–220 words unless platform strongly calls for shorter copy. Start 
     if _bad_text(result["caption"]) or _bad_text(result["hook"]):
         raise AIProviderError("AI caption was too generic")
     result["cta"] = requested_cta if requested_cta else result["cta"]
-    # Preserve the API's canonical display value instead of exposing the serializer's lowercase choice.
-    result["platform"] = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn", "twitter": "Twitter", "x": "X", "youtube": "YouTube", "tiktok": "TikTok"}.get(str(data.get("platform") or "").lower(), data.get("platform"))
+    result["platform"] = _platform_label(data.get("platform"))
+    if requested_cta and requested_cta not in result["caption"]:
+        result["caption"] = result["caption"].rstrip() + "\n\n" + requested_cta
     return result
 
 
@@ -75,8 +85,11 @@ class CaptionGenerateView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data); serializer.is_valid(raise_exception=True); data = serializer.validated_data
         try: result = _caption(data)
         except AIProviderError: result = generate_caption(**data)
-        if data.get("cta"): result["cta"] = data["cta"]
-        result["platform"] = {"instagram": "Instagram", "facebook": "Facebook", "linkedin": "LinkedIn", "twitter": "Twitter", "x": "X", "youtube": "YouTube", "tiktok": "TikTok"}.get(str(data.get("platform") or "").lower(), data.get("platform"))
+        if data.get("cta"):
+            result["cta"] = data["cta"]
+            if data["cta"] not in result.get("caption", ""):
+                result["caption"] = result["caption"].rstrip() + "\n\n" + data["cta"]
+        result["platform"] = _platform_label(data.get("platform"))
         return Response(result)
 
 
