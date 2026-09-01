@@ -2,6 +2,7 @@ import json
 import os
 import re
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 
@@ -10,7 +11,7 @@ class AIProviderError(RuntimeError):
 
 
 def ai_configured():
-    provider = os.getenv("AI_PROVIDER", "gemini").strip().lower()
+    provider = _provider()
     if provider == "gemini":
         return bool(os.getenv("AI_API_KEY") or os.getenv("GEMINI_API_KEY"))
     return bool(os.getenv("AI_API_KEY") or os.getenv("OPENAI_API_KEY"))
@@ -31,7 +32,7 @@ def _base_url():
     if configured:
         return configured.rstrip("/")
     if _provider() == "gemini":
-        return "https://generativelanguage.googleapis.com/v1beta/openai"
+        return "https://generativelanguage.googleapis.com/v1beta"
     return "https://api.openai.com/v1"
 
 
@@ -50,7 +51,8 @@ def _extract_json(text):
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        start = min((index for index in (text.find("{"), text.find("[")) if index >= 0), default=-1)
+        starts = [index for index in (text.find("{"), text.find("[")) if index >= 0]
+        start = min(starts, default=-1)
         if start < 0:
             raise AIProviderError("AI provider returned non-JSON output.")
         end = max(text.rfind("}"), text.rfind("]"))
@@ -62,49 +64,103 @@ def _extract_json(text):
             raise AIProviderError("AI provider returned invalid JSON.") from exc
 
 
-def generate_json(system_prompt, user_prompt, temperature=0.7, max_tokens=3000):
-    if not ai_configured():
-        raise AIProviderError("AI provider is not configured.")
-
-    payload = json.dumps(
-        {
-            "model": _model(),
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-        }
-    ).encode("utf-8")
+def _request_json(url, payload, headers=None):
     request = Request(
-        f"{_base_url()}/chat/completions",
-        data=payload,
+        url,
+        data=json.dumps(payload).encode("utf-8"),
         headers={
-            "Authorization": f"Bearer {_api_key()}",
             "Content-Type": "application/json",
             "Accept": "application/json",
             "User-Agent": "FlayerWings-Tools/1.0",
+            **(headers or {}),
         },
         method="POST",
     )
-
     try:
         with urlopen(request, timeout=45) as response:
-            result = json.loads(response.read().decode("utf-8"))
+            return json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
         try:
-            error_payload = json.loads(exc.read().decode("utf-8"))
-            message = error_payload.get("error", {}).get("message", str(exc))
+            body = exc.read().decode("utf-8")
+            error_payload = json.loads(body)
+            message = (
+                error_payload.get("error", {}).get("message")
+                or error_payload.get("message")
+                or body
+                or str(exc)
+            )
         except Exception:
             message = str(exc)
         raise AIProviderError(message) from exc
     except (URLError, TimeoutError, ValueError) as exc:
         raise AIProviderError("AI provider is temporarily unavailable.") from exc
 
+
+def _generate_gemini(system_prompt, user_prompt, temperature, max_tokens):
+    # Use Gemini's native generateContent API. This avoids compatibility-layer
+    # differences while keeping the public AI client provider-agnostic.
+    url = (
+        f"{_base_url()}/models/{_model()}:generateContent?"
+        + urlencode({"key": _api_key()})
+    )
+    payload = {
+        "systemInstruction": {
+            "parts": [{"text": system_prompt}],
+        },
+        "contents": [
+            {
+                "role": "user",
+                "parts": [{"text": user_prompt}],
+            }
+        ],
+        "generationConfig": {
+            "temperature": temperature,
+            "maxOutputTokens": max_tokens,
+            "responseMimeType": "application/json",
+        },
+    }
+    result = _request_json(url, payload)
+    try:
+        parts = result["candidates"][0]["content"]["parts"]
+        content = "".join(part.get("text", "") for part in parts).strip()
+    except (KeyError, IndexError, TypeError) as exc:
+        error = result.get("error", {}) if isinstance(result, dict) else {}
+        raise AIProviderError(
+            error.get("message") or "Gemini returned an unexpected response."
+        ) from exc
+    if not content:
+        raise AIProviderError("Gemini returned an empty response.")
+    return _extract_json(content)
+
+
+def _generate_openai_compatible(system_prompt, user_prompt, temperature, max_tokens):
+    payload = {
+        "model": _model(),
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
+    result = _request_json(
+        f"{_base_url()}/chat/completions",
+        payload,
+        headers={"Authorization": f"Bearer {_api_key()}"},
+    )
     try:
         content = result["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as exc:
         raise AIProviderError("AI provider returned an unexpected response.") from exc
-
     return _extract_json(content)
+
+
+def generate_json(system_prompt, user_prompt, temperature=0.7, max_tokens=3000):
+    if not ai_configured():
+        raise AIProviderError("AI provider is not configured.")
+
+    if _provider() == "gemini":
+        return _generate_gemini(system_prompt, user_prompt, temperature, max_tokens)
+    if _provider() == "openai":
+        return _generate_openai_compatible(system_prompt, user_prompt, temperature, max_tokens)
+    raise AIProviderError(f"Unsupported AI provider: {_provider()}")
