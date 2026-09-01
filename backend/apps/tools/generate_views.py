@@ -161,17 +161,32 @@ Make the output specific enough that a content creator could start producing the
 
     result = generate_json(AI_SYSTEM, prompt, temperature=0.8, max_tokens=5000)
 
-    # Keep concise, meaningful industry labels in at least one relevant idea.
-    # This improves contextual usefulness without injecting long keyword lists.
+    # Preserve concise industry context on the idea that is actually most related
+    # to the offer, rather than arbitrarily changing the first idea returned.
     industry = str(data.get("industry") or "").strip()
     if industry and len(industry.split()) <= 3 and isinstance(result, dict):
         industry_lower = industry.lower()
-        for idea in result.get("ideas", []):
+        ideas = result.get("ideas", [])
+        offer_words = {
+            word for word in str(data.get("offer") or "").lower().split()
+            if len(word) >= 4
+        }
+        candidates = []
+        for index, idea in enumerate(ideas):
+            if not isinstance(idea, dict):
+                continue
             title = str(idea.get("title") or "")
             outline = str(idea.get("outline") or "")
-            if industry_lower not in f"{title} {outline}".lower() and title:
-                idea["title"] = f"{title} for {industry} teams"
-                break
+            text = f"{title} {outline}".lower()
+            if industry_lower in text:
+                continue
+            score = sum(1 for word in offer_words if word in text)
+            candidates.append((score, index))
+        if candidates:
+            _, target_index = max(candidates, key=lambda item: (item[0], -item[1]))
+            idea = ideas[target_index]
+            if isinstance(idea, dict) and idea.get("title"):
+                idea["title"] = f"{idea['title']} for {industry} teams"
 
     if _validate_ideas(result, data):
         return result
