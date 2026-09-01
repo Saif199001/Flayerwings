@@ -6,6 +6,7 @@ import {
   generateSocialAudit,
 } from "../services/api";
 import ToolLeadCapture from "../components/ToolLeadCapture";
+import "../styles/tools-results.css";
 
 const TOOL_CONFIG = {
   "social-media-audit": {
@@ -176,7 +177,7 @@ function ResultView({ result, slug }) {
   };
 
   if (slug === "content-ideas") {
-    const copyText = (result.ideas || []).map((idea, index) => `${index + 1}. ${idea.title}\nFormat: ${idea.format}\nPillar: ${idea.pillar}\nGoal: ${idea.goal}\nHook: ${idea.hook}\n${idea.outline}`).join("\n\n");
+    const copyText = (result.ideas || []).map((idea, index) => `${index + 1}. ${idea.title}\nFormat: ${idea.format}\nPillar: ${idea.pillar}\nGoal: ${idea.goal}\nHook: ${idea.hook}\nOutline: ${idea.outline}`).join("\n\n");
     return (
       <section className="tool-result-card" aria-label="Generated Content Strategy">
         <div className="result-header-bar">
@@ -189,8 +190,8 @@ function ResultView({ result, slug }) {
               <div className="idea-card-top"><span className="idea-card-index">{String(index + 1).padStart(2, "0")}</span><span className="idea-meta-pill">{idea.format}</span></div>
               <h3>{idea.title}</h3>
               <div className="idea-meta-row"><span>{idea.pillar}</span><span>{idea.goal}</span></div>
-              <p><strong>Hook:</strong> {idea.hook}</p>
-              <p><strong>Outline:</strong> {idea.outline}</p>
+              <p><strong>Hook</strong>{idea.hook}</p>
+              <p><strong>Outline</strong>{idea.outline}</p>
             </article>
           ))}
         </div>
@@ -199,7 +200,8 @@ function ResultView({ result, slug }) {
   }
 
   if (slug === "caption-generator") {
-    const fullText = `${result.caption}\n\n${(result.hashtags || []).join(" ")}`;
+    const captionBody = (result.caption || "").replace(result.hook || "", "").trim();
+    const fullText = `${result.hook}\n\n${captionBody}\n\n${result.cta}\n\n${(result.hashtags || []).join(" ")}`;
     return (
       <section className="tool-result-card" aria-label="Generated Caption">
         <div className="result-header-bar">
@@ -208,7 +210,7 @@ function ResultView({ result, slug }) {
         </div>
         <div className="caption-preview-box">
           <div className="result-highlight-block"><span>HOOK</span><p>{result.hook}</p></div>
-          <div className="caption-text-block">{result.caption}</div>
+          <div className="caption-text-block">{captionBody}</div>
           <div className="caption-detail-grid">
             <div><span>FORMAT</span><strong>{result.format}</strong></div>
             <div><span>CTA</span><strong>{result.cta}</strong></div>
