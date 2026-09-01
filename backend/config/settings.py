@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "apps.core",
     "apps.leads",
-    "apps.tools",
     "apps.projects",
     "apps.content",
 ]
