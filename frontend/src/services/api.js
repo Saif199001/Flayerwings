@@ -14,8 +14,15 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function createLead(payload) {
-  return request("/leads/", { method: "POST", body: JSON.stringify(payload) });
-}
-
+export function createLead(payload) { return request("/leads/", { method: "POST", body: JSON.stringify(payload) }); }
 export function getProjects() { return request("/projects/"); }
+
+export function listTools() { return request("/tools/"); }
+export function getToolTemplates(slug) { return request(`/tools/templates/${slug}/`); }
+export function createToolDocument(payload) { return request("/tools/documents/", { method: "POST", body: JSON.stringify(payload) }); }
+export function getToolDocuments(visitorId) { return request(`/tools/documents/?visitor_id=${encodeURIComponent(visitorId)}`); }
+export function trackToolEvent(payload) { return request("/tools/events/", { method: "POST", body: JSON.stringify(payload) }); }
+export function getToolPdfUrl(id, visitorId) {
+  const suffix = visitorId ? `?visitor_id=${encodeURIComponent(visitorId)}` : "";
+  return `${API_BASE_URL}/tools/documents/${id}/pdf/${suffix}`;
+}
