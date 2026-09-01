@@ -1,4 +1,6 @@
-from rest_framework import generics, status
+from django.db.models import Count
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
@@ -27,9 +29,8 @@ class ToolDocumentListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         qs = ToolDocument.objects.select_related("tool", "template")
-        user = self.request.user
-        if user.is_authenticated:
-            return qs.filter(user=user)
+        if self.request.user.is_authenticated:
+            return qs.filter(user=self.request.user)
         visitor_id = self.request.query_params.get("visitor_id", "")
         return qs.filter(visitor_id=visitor_id) if visitor_id else qs.none()
 
@@ -62,7 +63,7 @@ class ToolDocumentPDFView(APIView):
         else:
             visitor_id = request.query_params.get("visitor_id", "")
             qs = qs.filter(visitor_id=visitor_id) if visitor_id else qs.none()
-        document = generics.get_object_or_404(qs, pk=pk)
+        document = get_object_or_404(qs, pk=pk)
         return document_pdf_response(document)
 
 
@@ -77,15 +78,14 @@ class ToolEventCreateView(generics.CreateAPIView):
 
 
 class ToolStatsView(APIView):
-    """Small aggregate endpoint for internal analytics dashboards."""
     throttle_scope = "tool_stats"
     throttle_classes = [ScopedRateThrottle]
 
     def get(self, request, slug):
-        tool = generics.get_object_or_404(ToolDefinition, slug=slug, active=True)
-        events = ToolEvent.objects.filter(tool=tool)
+        tool = get_object_or_404(ToolDefinition, slug=slug, active=True)
+        events = ToolEvent.objects.filter(tool=tool).values("event_type").annotate(count=Count("id"))
         return Response({
             "tool": tool.slug,
-            "events": events.values("event_type").annotate(count=__import__("django").db.models.Count("id")),
+            "events": list(events),
             "documents": ToolDocument.objects.filter(tool=tool).count(),
         })
