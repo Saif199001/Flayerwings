@@ -30,7 +30,10 @@ def _api_key():
 def _base_url():
     configured = os.getenv("AI_API_BASE_URL")
     if configured:
-        return configured.rstrip("/")
+        configured = configured.rstrip("/")
+        if _provider() == "gemini" and configured.endswith("/openai"):
+            configured = configured[: -len("/openai")]
+        return configured
     if _provider() == "gemini":
         return "https://generativelanguage.googleapis.com/v1beta"
     return "https://api.openai.com/v1"
@@ -97,20 +100,10 @@ def _request_json(url, payload, headers=None):
 
 
 def _generate_gemini(system_prompt, user_prompt, temperature, max_tokens):
-    url = (
-        f"{_base_url()}/models/{_model()}:generateContent?"
-        + urlencode({"key": _api_key()})
-    )
+    url = f"{_base_url()}/models/{_model()}:generateContent?" + urlencode({"key": _api_key()})
     payload = {
-        "systemInstruction": {
-            "parts": [{"text": system_prompt}],
-        },
-        "contents": [
-            {
-                "role": "user",
-                "parts": [{"text": user_prompt}],
-            }
-        ],
+        "systemInstruction": {"parts": [{"text": system_prompt}]},
+        "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
         "generationConfig": {
             "temperature": temperature,
             "maxOutputTokens": max_tokens,
@@ -157,7 +150,6 @@ def _generate_openai_compatible(system_prompt, user_prompt, temperature, max_tok
 def generate_json(system_prompt, user_prompt, temperature=0.7, max_tokens=3000):
     if not ai_configured():
         raise AIProviderError("AI provider is not configured.")
-
     if _provider() == "gemini":
         return _generate_gemini(system_prompt, user_prompt, temperature, max_tokens)
     if _provider() == "openai":
