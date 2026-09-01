@@ -91,7 +91,7 @@ def _request_json(url, payload, headers=None):
             )
         except Exception:
             message = str(exc)
-        raise AIProviderError(message) from exc
+        raise AIProviderError(f"AI provider HTTP {exc.code}: {message}") from exc
     except (URLError, TimeoutError, ValueError) as exc:
         raise AIProviderError("AI provider is temporarily unavailable.") from exc
 
