@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
+from .meta_client import MetaGraphError
 from .models import Tool
 
 
@@ -142,3 +143,21 @@ class ToolApiTests(TestCase):
         self.assertEqual(len(payload["quick_wins"]), 4)
         self.assertEqual(len(payload["seven_day_plan"]), 7)
         self.assertIn("does not scrape", payload["confidence_note"])
+
+    @patch("apps.tools.generate_views.run_live_social_audit", side_effect=MetaGraphError("Instagram account is not available to live analysis."))
+    def test_social_audit_falls_back_when_meta_is_unavailable(self, mock_live_audit):
+        response = self.client.post(
+            reverse("social-audit-generate"),
+            data={
+                "business": "Flayer Wings",
+                "profile_url": "https://instagram.com/flayerwings",
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_live_audit.assert_called_once()
+        payload = response.json()
+        self.assertEqual(payload["audit_type"], "strategy_baseline")
+        self.assertEqual(payload["data_source"], "strategy_baseline")
+        self.assertFalse(payload["live_data_available"])
+        self.assertEqual(len(payload["seven_day_plan"]), 7)
