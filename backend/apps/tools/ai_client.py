@@ -97,8 +97,6 @@ def _request_json(url, payload, headers=None):
 
 
 def _generate_gemini(system_prompt, user_prompt, temperature, max_tokens):
-    # Use Gemini's native generateContent API. This avoids compatibility-layer
-    # differences while keeping the public AI client provider-agnostic.
     url = (
         f"{_base_url()}/models/{_model()}:generateContent?"
         + urlencode({"key": _api_key()})
@@ -120,14 +118,13 @@ def _generate_gemini(system_prompt, user_prompt, temperature, max_tokens):
         },
     }
     result = _request_json(url, payload)
+    if isinstance(result, dict) and result.get("error"):
+        raise AIProviderError(result["error"].get("message", "Gemini API request failed."))
     try:
         parts = result["candidates"][0]["content"]["parts"]
         content = "".join(part.get("text", "") for part in parts).strip()
     except (KeyError, IndexError, TypeError) as exc:
-        error = result.get("error", {}) if isinstance(result, dict) else {}
-        raise AIProviderError(
-            error.get("message") or "Gemini returned an unexpected response."
-        ) from exc
+        raise AIProviderError("Gemini returned an unexpected response.") from exc
     if not content:
         raise AIProviderError("Gemini returned an empty response.")
     return _extract_json(content)
@@ -148,6 +145,8 @@ def _generate_openai_compatible(system_prompt, user_prompt, temperature, max_tok
         payload,
         headers={"Authorization": f"Bearer {_api_key()}"},
     )
+    if isinstance(result, dict) and result.get("error"):
+        raise AIProviderError(result["error"].get("message", "AI provider request failed."))
     try:
         content = result["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as exc:
