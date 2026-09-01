@@ -42,13 +42,24 @@ INPUT: {data}
 Reason privately about the audience problem, useful insight, business goal and natural next action.
 Return JSON with exactly: caption, hashtags, hook, cta, platform, format, strategy_note.
 Caption: 120–220 words unless platform strongly calls for shorter copy. Start with curiosity around the audience problem, not a topic restatement. Include a concrete framework, example, checklist, decision rule or actionable takeaway. Mention the offer naturally. Match tone and goal. Use <=5 relevant hashtags. Avoid generic templates and invented evidence.
+Do not paste the full audience, industry or offer field into the opening. Use natural language and make the post sound written for the specific audience.
 """
-    result = generate_json(AI_SYSTEM, prompt, temperature=0.85, max_tokens=2200)
+    result = generate_json(AI_SYSTEM, prompt, temperature=0.8, max_tokens=2200)
     required = ("caption", "hashtags", "hook", "cta", "platform", "format", "strategy_note")
     if not isinstance(result, dict) or any(not result.get(k) for k in required) or not isinstance(result["hashtags"], list):
         raise AIProviderError("Invalid AI caption contract")
-    if _bad_text(result["caption"]) or _bad_text(result["hook"]):
-        raise AIProviderError("AI caption was too generic")
+    caption = str(result["caption"])
+    if _bad_text(caption) or _bad_text(result["hook"]):
+        repair_prompt = f"""Rewrite this social post so it is specific, natural and publish-ready.
+INPUT: {data}
+DRAFT: {result}
+Return JSON only with exactly: caption, hashtags, hook, cta, platform, format, strategy_note.
+Remove generic AI phrasing, topic restatement and keyword stuffing. Lead with a real audience tension or useful insight. Include one concrete framework, example, decision rule or actionable takeaway. Mention the business/offer naturally. Never invent proof or metrics. Keep the requested CTA exact if one was supplied."""
+        result = generate_json(AI_SYSTEM, repair_prompt, temperature=0.6, max_tokens=2200)
+        if not isinstance(result, dict) or any(not result.get(k) for k in required) or not isinstance(result["hashtags"], list):
+            raise AIProviderError("Invalid AI caption repair contract")
+        if _bad_text(result["caption"]) or _bad_text(result["hook"]):
+            raise AIProviderError("AI caption failed the quality contract")
     result["cta"] = requested_cta if requested_cta else result["cta"]
     result["platform"] = _platform_label(data.get("platform"))
     if requested_cta and requested_cta not in result["caption"]:
@@ -75,13 +86,11 @@ def _idea_is_usable(idea, data):
     if len(outline.split()) < 8:
         return False
 
-    # Do not allow the model to simply paste the form fields into every idea.
     for field in ("audience", "industry", "offer"):
         value = str(data.get(field) or "").strip().lower()
         if len(value) >= 18 and value in title_lower:
             return False
 
-    # A title should contain a concrete editorial angle, not just the product name.
     angle_words = {
         "why", "how", "when", "what", "which", "before", "after", "mistake", "mistakes",
         "problem", "problems", "lesson", "lessons", "framework", "checklist", "guide",
@@ -109,7 +118,6 @@ def _validate_ideas(result, data):
     if len(set(titles)) != 10 or len(set(hooks)) < 8:
         return False
 
-    # Prevent near-identical titles disguised as different ideas.
     token_sets = [set(t.replace(":", " ").replace("—", " ").split()) for t in titles]
     for index, tokens in enumerate(token_sets):
         for other in token_sets[index + 1:]:
@@ -151,8 +159,6 @@ Make the output specific enough that a content creator could start producing the
     if _validate_ideas(result, data):
         return result
 
-    # One deliberate repair pass is better than silently falling back to the old
-    # template generator. A failed AI contract must never turn into generic output.
     repair_prompt = f"""Rewrite the following 10 content ideas into a genuinely publishable strategy.
 
 ORIGINAL INPUT:
@@ -198,7 +204,8 @@ class CaptionGenerateView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data); serializer.is_valid(raise_exception=True); data = serializer.validated_data
         try: result = _caption(data)
-        except AIProviderError: result = generate_caption(**data)
+        except AIProviderError as exc:
+            return Response({"error": str(exc), "code": "ai_quality_contract_failed"}, status=502)
         if data.get("cta"):
             result["cta"] = data["cta"]
             if data["cta"] not in result.get("caption", ""):
