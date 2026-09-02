@@ -68,7 +68,7 @@ Supported event types: `tool_open`, `tool_start`, `tool_complete`, `document_cre
 
 `GET /api/v1/tools/stats/<tool-slug>/`
 
-Returns basic event counts and document totals for the tool. This endpoint is intended for internal analytics use and requires authentication/authorization; it must not be exposed as a public dashboard without appropriate access control.
+Returns basic event counts and document totals for the tool. This is an internal analytics endpoint and requires an authenticated staff/admin user; it must not be exposed as a public dashboard without appropriate access control.
 
 ## Projects
 
@@ -98,6 +98,7 @@ Returns one published content record.
 - Public lead and tool event/document creation accepts only explicitly writable fields.
 - Server-managed fields such as IDs, status, notes and timestamps are read-only.
 - Anonymous document/history access is scoped by a client-generated visitor ID.
-- Tool API endpoints use scoped DRF throttles; production deployments should use a shared cache backend for multi-worker rate limiting.
+- Tool API endpoints use scoped DRF throttles; production deployments must provide a shared cache backend such as Redis for multi-worker rate limiting.
+- Internal tool statistics require an authenticated staff/admin user.
 - Validation errors use standard Django REST Framework validation responses.
 - Frontend code must consume the documented response shapes and must not rely on undocumented fields.
