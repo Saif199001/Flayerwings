@@ -67,25 +67,60 @@ const solutionsData = [
 
 const toolsData = [
   {
-    icon: "⏱",
-    title: "Social Media Audit",
-    copy: "Analyze your social presence and get actionable insights to grow faster.",
-    cta: "Try Audit",
-    link: "/tools/social-media-audit",
+    icon: "🧾",
+    title: "GST Invoice Generator",
+    copy: "Create professional GST invoices with automatic tax calculations and print-ready output.",
+    cta: "Create Invoice",
+    link: "/tools/gst-invoice-generator",
   },
   {
-    icon: "Aa",
-    title: "AI Caption Generator",
-    copy: "Generate engaging captions with the power of AI in seconds.",
-    cta: "Try Generator",
-    link: "/tools/caption-generator",
+    icon: "🧮",
+    title: "GST Calculator",
+    copy: "Add or remove GST instantly with clear CGST, SGST and IGST calculations.",
+    cta: "Calculate GST",
+    link: "/tools/gst-calculator",
   },
   {
-    icon: "💡",
-    title: "Content Ideas",
-    copy: "Discover trending content ideas tailored to your niche and audience.",
-    cta: "Get Ideas",
-    link: "/tools/content-ideas",
+    icon: "▦",
+    title: "QR Code Generator",
+    copy: "Create branded QR codes for links, text, payments, menus and campaigns.",
+    cta: "Create QR",
+    link: "/tools/qr-generator",
+  },
+  {
+    icon: "◉",
+    title: "WhatsApp Link & QR",
+    copy: "Create click-to-chat WhatsApp links and QR codes with a ready-to-share message.",
+    cta: "Create Link",
+    link: "/tools/whatsapp-link-generator",
+  },
+  {
+    icon: "📋",
+    title: "Quotation Generator",
+    copy: "Build professional quotations and estimates with GST, discounts and customer details.",
+    cta: "Create Quote",
+    link: "/tools/quotation-generator",
+  },
+  {
+    icon: "🧾",
+    title: "Receipt Generator",
+    copy: "Create clean payment receipts with business details, payment method and printable output.",
+    cta: "Create Receipt",
+    link: "/tools/receipt-generator",
+  },
+  {
+    icon: "💳",
+    title: "Payment Reminder",
+    copy: "Generate polite or firm payment reminders ready to copy and share with customers.",
+    cta: "Create Reminder",
+    link: "/tools/payment-reminder-generator",
+  },
+  {
+    icon: "🔗",
+    title: "UTM Campaign Builder",
+    copy: "Build clean campaign URLs for tracking traffic from social, ads, email and more.",
+    cta: "Build UTM",
+    link: "/tools/utm-builder",
   },
 ];
 
@@ -255,7 +290,6 @@ function Home() {
 
               <div className="product-preview-col">
                 <div className="dashboard-mockup">
-                  {/* Dashboard Header Bar */}
                   <div className="mockup-header">
                     <div className="mockup-user-info">
                       <span className="mockup-avatar">👋</span>
@@ -267,7 +301,6 @@ function Home() {
                   </div>
 
                   <div className="mockup-body">
-                    {/* Mockup Sidebar */}
                     <div className="mockup-sidebar" aria-hidden="true">
                       <span className="sidebar-tab active">◫ Dashboard</span>
                       <span className="sidebar-tab">👥 Accounts</span>
@@ -278,114 +311,32 @@ function Home() {
                       <span className="sidebar-tab">⚙ Settings</span>
                     </div>
 
-                    {/* Mockup Main View */}
                     <div className="mockup-content">
-                      {/* Metric Cards Row */}
                       <div className="mockup-metrics-grid">
-                        <div className="metric-box">
-                          <small>Accounts</small>
-                          <div className="metric-val-row">
-                            <strong>24</strong>
-                            <span className="badge-up">+12%</span>
-                          </div>
-                        </div>
-                        <div className="metric-box">
-                          <small>Total Reach</small>
-                          <div className="metric-val-row">
-                            <strong>128.4K</strong>
-                            <span className="badge-up">+18.2%</span>
-                          </div>
-                        </div>
-                        <div className="metric-box">
-                          <small>Engagement</small>
-                          <div className="metric-val-row">
-                            <strong>8.7K</strong>
-                            <span className="badge-up">+22.1%</span>
-                          </div>
-                        </div>
-                        <div className="metric-box">
-                          <small>Impressions</small>
-                          <div className="metric-val-row">
-                            <strong>356.7K</strong>
-                            <span className="badge-up">+16.7%</span>
-                          </div>
-                        </div>
+                        <div className="metric-box"><small>Accounts</small><div className="metric-val-row"><strong>24</strong><span className="badge-up">+12%</span></div></div>
+                        <div className="metric-box"><small>Total Reach</small><div className="metric-val-row"><strong>128.4K</strong><span className="badge-up">+18.2%</span></div></div>
+                        <div className="metric-box"><small>Engagement</small><div className="metric-val-row"><strong>8.7K</strong><span className="badge-up">+22.1%</span></div></div>
+                        <div className="metric-box"><small>Impressions</small><div className="metric-val-row"><strong>356.7K</strong><span className="badge-up">+16.7%</span></div></div>
                       </div>
 
-                      {/* Performance Chart & Platforms Row */}
                       <div className="mockup-charts-grid">
                         <div className="chart-panel">
-                          <div className="chart-header">
-                            <span>Performance Overview</span>
-                            <span className="chart-filter">This Week ▾</span>
-                          </div>
+                          <div className="chart-header"><span>Performance Overview</span><span className="chart-filter">This Week ▾</span></div>
                           <div className="chart-svg-wrap">
                             <svg viewBox="0 0 340 100" preserveAspectRatio="none" className="chart-svg">
-                              <defs>
-                                <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                  <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" />
-                                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.0" />
-                                </linearGradient>
-                              </defs>
-                              <path
-                                d="M0,80 Q50,20 100,50 T200,30 T280,60 T340,20 L340,100 L0,100 Z"
-                                fill="url(#chartGrad)"
-                              />
-                              <path
-                                d="M0,80 Q50,20 100,50 T200,30 T280,60 T340,20"
-                                fill="none"
-                                stroke="#38bdf8"
-                                strokeWidth="2.5"
-                              />
+                              <defs><linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" /><stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.0" /></linearGradient></defs>
+                              <path d="M0,80 Q50,20 100,50 T200,30 T280,60 T340,20 L340,100 L0,100 Z" fill="url(#chartGrad)" />
+                              <path d="M0,80 Q50,20 100,50 T200,30 T280,60 T340,20" fill="none" stroke="#38bdf8" strokeWidth="2.5" />
                             </svg>
                           </div>
                         </div>
 
                         <div className="platforms-panel">
                           <span className="platforms-title">Top Platforms</span>
-                          <div className="platform-row">
-                            <div className="platform-label">
-                              <span className="platform-dot dot-ig" />
-                              <span>Instagram</span>
-                            </div>
-                            <div className="platform-bar-wrap">
-                              <div className="platform-bar bar-ig" style={{ width: "48%" }} />
-                            </div>
-                            <span className="platform-percent">48%</span>
-                          </div>
-
-                          <div className="platform-row">
-                            <div className="platform-label">
-                              <span className="platform-dot dot-fb" />
-                              <span>Facebook</span>
-                            </div>
-                            <div className="platform-bar-wrap">
-                              <div className="platform-bar bar-fb" style={{ width: "28%" }} />
-                            </div>
-                            <span className="platform-percent">28%</span>
-                          </div>
-
-                          <div className="platform-row">
-                            <div className="platform-label">
-                              <span className="platform-dot dot-li" />
-                              <span>LinkedIn</span>
-                            </div>
-                            <div className="platform-bar-wrap">
-                              <div className="platform-bar bar-li" style={{ width: "16%" }} />
-                            </div>
-                            <span className="platform-percent">16%</span>
-                          </div>
-
-                          <div className="platform-row">
-                            <div className="platform-label">
-                              <span className="platform-dot dot-x" />
-                              <span>X (Twitter)</span>
-                            </div>
-                            <div className="platform-bar-wrap">
-                              <div className="platform-bar bar-x" style={{ width: "8%" }} />
-                            </div>
-                            <span className="platform-percent">8%</span>
-                          </div>
+                          <div className="platform-row"><div className="platform-label"><span className="platform-dot dot-ig" /><span>Instagram</span></div><div className="platform-bar-wrap"><div className="platform-bar bar-ig" style={{ width: "48%" }} /></div><span className="platform-percent">48%</span></div>
+                          <div className="platform-row"><div className="platform-label"><span className="platform-dot dot-fb" /><span>Facebook</span></div><div className="platform-bar-wrap"><div className="platform-bar bar-fb" style={{ width: "28%" }} /></div><span className="platform-percent">28%</span></div>
+                          <div className="platform-row"><div className="platform-label"><span className="platform-dot dot-li" /><span>LinkedIn</span></div><div className="platform-bar-wrap"><div className="platform-bar bar-li" style={{ width: "16%" }} /></div><span className="platform-percent">16%</span></div>
+                          <div className="platform-row"><div className="platform-label"><span className="platform-dot dot-x" /><span>X (Twitter)</span></div><div className="platform-bar-wrap"><div className="platform-bar bar-x" style={{ width: "8%" }} /></div><span className="platform-percent">8%</span></div>
                         </div>
                       </div>
                     </div>
@@ -403,7 +354,7 @@ function Home() {
               <div className="header-left">
                 <span className="eyebrow-cyan">FREE TOOLS</span>
                 <h2 className="section-title">Powerful tools. Free for everyone.</h2>
-                <p className="section-subtitle">No sign up required. Instant results.</p>
+                <p className="section-subtitle">All 8 tools are free. No sign up required. Instant results.</p>
               </div>
               <div className="header-right">
                 <Link to="/tools" className="button button-ghost header-cta">
@@ -415,7 +366,7 @@ function Home() {
             <div className="tools-grid-three">
               {toolsData.map((item) => (
                 <div key={item.title} className="tool-card-showcase">
-                  <span className="tool-card-icon">{item.icon}</span>
+                  <span className="tool-card-icon" aria-hidden="true">{item.icon}</span>
                   <h3 className="tool-card-title">{item.title}</h3>
                   <p className="tool-card-desc">{item.copy}</p>
                   <Link to={item.link} className="tool-card-action">
@@ -428,21 +379,10 @@ function Home() {
         </section>
 
         {/* 6. CONTACT / LET'S TALK */}
-        <section className="section contact-showcase-section" id="contact">
-          <div className="section-container">
-            <div className="contact-glass-container">
-              <div className="contact-info-column">
-                <h2 className="contact-main-heading">Let's build something<br />great together</h2>
-                <p className="contact-main-desc">
-                  Have a project in mind or need expert advice? We're here to help.
-                </p>
-                <ContactDetails />
-              </div>
-
-              <div className="contact-form-column">
-                <ContactForm />
-              </div>
-            </div>
+        <section className="section contact-section" id="contact">
+          <div className="section-container contact-grid">
+            <ContactDetails />
+            <ContactForm />
           </div>
         </section>
       </main>
@@ -455,56 +395,11 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="/services"
-        element={
-          <>
-            <Navbar />
-            <ServicesPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/about"
-        element={
-          <>
-            <Navbar />
-            <AboutPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/tools"
-        element={
-          <>
-            <Navbar />
-            <ToolsPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/tools/:slug"
-        element={
-          <>
-            <Navbar />
-            <ToolPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/product"
-        element={
-          <>
-            <Navbar />
-            <ProductPage />
-            <Footer />
-          </>
-        }
-      />
+      <Route path="/tools" element={<><Navbar /><ToolsPage /><Footer /></>} />
+      <Route path="/tools/:slug" element={<><Navbar /><ToolPage /><Footer /></>} />
+      <Route path="/product" element={<><Navbar /><ProductPage /><Footer /></>} />
+      <Route path="/services" element={<><Navbar /><ServicesPage /><Footer /></>} />
+      <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
