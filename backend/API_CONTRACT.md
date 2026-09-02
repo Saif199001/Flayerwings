@@ -64,11 +64,11 @@ Downloads a server-generated PDF for an authorized document.
 
 Records tool usage/conversion events with optional UTM attribution and document linkage.
 
-Supported event types: `tool_open`, `tool_start`, `tool_complete`, `document_created`, `pdf_downloaded`, `copy`, `cta_click`, `lead_submitted`.
+Supported event types: `tool_open`, `tool_start`, `tool_complete`, `document_created`, `pdf_downloaded`, `png_downloaded`, `copy`, `cta_click`, `lead_submitted`.
 
 `GET /api/v1/tools/stats/<tool-slug>/`
 
-Returns basic event counts and document totals for the tool. This endpoint is intended for internal analytics use and should not be exposed as a public dashboard without authentication/authorization.
+Returns basic event counts and document totals for the tool. This endpoint is intended for internal analytics use and requires authentication/authorization; it must not be exposed as a public dashboard without appropriate access control.
 
 ## Projects
 
