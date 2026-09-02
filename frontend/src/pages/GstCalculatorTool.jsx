@@ -11,7 +11,8 @@ function Field({ label, ...props }) {
 
 export default function GstCalculatorTool() {
   const [amount, setAmount] = useState("10000");
-  const [rate, setRate] = useState("18");
+  const [rateOption, setRateOption] = useState("18");
+  const [customRate, setCustomRate] = useState("18");
   const [mode, setMode] = useState("add");
   const [taxType, setTaxType] = useState("intra");
   const [copied, setCopied] = useState(false);
@@ -24,15 +25,15 @@ export default function GstCalculatorTool() {
 
   const result = useMemo(() => {
     const input = Math.max(0, Number(amount) || 0);
-    const gstRate = Math.max(0, Number(rate) || 0);
+    const gstRate = Math.max(0, Number(rateOption === "custom" ? customRate : rateOption) || 0);
     if (mode === "remove") {
       const taxable = gstRate ? input / (1 + gstRate / 100) : input;
       const gst = input - taxable;
-      return { taxable, gst, total: input, input, gstRate };
+      return { taxable, gst, total: input, gstRate };
     }
     const gst = input * gstRate / 100;
-    return { taxable: input, gst, total: input + gst, input, gstRate };
-  }, [amount, rate, mode]);
+    return { taxable: input, gst, total: input + gst, gstRate };
+  }, [amount, rateOption, customRate, mode]);
 
   const split = result.gst / 2;
   const summary = `GST Calculator\nTaxable amount: ${money(result.taxable)}\n${taxType === "intra" ? `CGST: ${money(split)}\nSGST: ${money(split)}` : `IGST: ${money(result.gst)}`}\nGST: ${money(result.gst)}\nTotal: ${money(result.total)}`;
@@ -51,7 +52,8 @@ export default function GstCalculatorTool() {
 
   const reset = () => {
     setAmount("10000");
-    setRate("18");
+    setRateOption("18");
+    setCustomRate("18");
     setMode("add");
     setTaxType("intra");
     setCopied(false);
@@ -70,13 +72,8 @@ export default function GstCalculatorTool() {
         <section className="gstc-workspace">
           <div className="gstc-panel">
             <div className="gstc-section-title"><div><span>01</span><h2>Enter your amount</h2></div><button type="button" onClick={reset}>Reset</button></div>
-            <div className="gstc-amount-wrap">
-              <span>₹</span>
-              <input aria-label="Amount" type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} />
-            </div>
-            <div className="gstc-presets">
-              {[1000, 5000, 10000, 50000, 100000].map((value) => <button type="button" key={value} className={Number(amount) === value ? "active" : ""} onClick={() => setAmount(String(value))}>{money(value)}</button>)}
-            </div>
+            <div className="gstc-amount-wrap"><span>₹</span><input aria-label="Amount" type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} /></div>
+            <div className="gstc-presets">{[1000, 5000, 10000, 50000, 100000].map((value) => <button type="button" key={value} className={Number(amount) === value ? "active" : ""} onClick={() => setAmount(String(value))}>{money(value)}</button>)}</div>
 
             <div className="gstc-section-title compact"><div><span>02</span><h2>Calculation type</h2></div></div>
             <div className="gstc-toggle" role="group" aria-label="GST calculation type">
@@ -85,8 +82,8 @@ export default function GstCalculatorTool() {
             </div>
 
             <div className="gstc-form-grid">
-              <label className="gstc-field"><span>GST Rate</span><select value={rate} onChange={(e) => setRate(e.target.value)}>{rates.map((value) => <option value={value} key={value}>{value}%</option>)}<option value="custom">Custom</option></select></label>
-              {rate === "custom" && <Field label="Custom GST Rate (%)" type="number" min="0" step="0.01" value={rate === "custom" ? "18" : rate} onChange={(e) => setRate(e.target.value)} />}
+              <label className="gstc-field"><span>GST Rate</span><select value={rateOption} onChange={(e) => setRateOption(e.target.value)}>{rates.map((value) => <option value={value} key={value}>{value}%</option>)}<option value="custom">Custom</option></select></label>
+              {rateOption === "custom" && <Field label="Custom GST Rate (%)" type="number" min="0" step="0.01" value={customRate} onChange={(e) => setCustomRate(e.target.value)} />}
               <label className="gstc-field"><span>Tax Type</span><select value={taxType} onChange={(e) => setTaxType(e.target.value)}><option value="intra">CGST + SGST (Intra-state)</option><option value="inter">IGST (Inter-state)</option></select></label>
             </div>
             <p className="gstc-note">For intra-state sales, GST is split equally between CGST and SGST. For inter-state sales, the full GST is shown as IGST.</p>
