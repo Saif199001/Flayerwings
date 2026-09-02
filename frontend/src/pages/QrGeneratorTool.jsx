@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import QRCode from "qrcode";
 import { getAttribution, getToolVisitorId, trackToolEvent } from "../services/api";
+import "../styles/qr-generator.css";
 
 const presets = [
   ["Website", "https://flayerwings.com"],
@@ -122,7 +123,7 @@ export default function QrGeneratorTool() {
               <label><span>Error correction</span><select value={errorCorrection} onChange={(e) => setErrorCorrection(e.target.value)}><option value="M">Medium</option><option value="Q">High</option><option value="H">Highest — best for logos</option></select></label>
             </div>
             <p className="qrg-note">Highest error correction is selected automatically for logo-ready QR codes. Keep the logo small so scanners can still read the code reliably.</p>
-            {error && <div className="qrg-error">{error}</div>}
+            {error && <div className="qrg-error" role="alert">{error}</div>}
             <div className="qrg-actions"><button type="button" className="button button-primary" onClick={generate}>Generate QR Code</button><button type="button" className="button button-secondary" onClick={copyContent}>{copied ? "✓ Content Copied" : "Copy Content"}</button></div>
           </div>
 
