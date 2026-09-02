@@ -29,8 +29,8 @@ class Project(models.Model):
     class Meta:
         ordering = ["sort_order", "-created_at"]
         indexes = [
-            models.Index(fields=["published", "featured"], name="projects_project_publis_9a1d72_idx"),
-            models.Index(fields=["project_type", "status"], name="projects_project_projec_8b61d4_idx"),
+            models.Index(fields=["published", "featured"], name="projects_pub_feat_idx"),
+            models.Index(fields=["project_type", "status"], name="projects_type_status_idx"),
         ]
 
     def __str__(self):
