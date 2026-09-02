@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Project(models.Model):
-    class ProjectType(models.TextChoices):
+    class ProjectType(models.TextChoices:
         PRODUCT = "product", "Product"
         CLIENT = "client", "Client Project"
         CASE_STUDY = "case-study", "Case Study"
@@ -29,8 +29,8 @@ class Project(models.Model):
     class Meta:
         ordering = ["sort_order", "-created_at"]
         indexes = [
-            models.Index(fields=["published", "featured"]),
-            models.Index(fields=["project_type", "status"]),
+            models.Index(fields=["published", "featured"], name="projects_project_publis_9a1d72_idx"),
+            models.Index(fields=["project_type", "status"], name="projects_project_projec_8b61d4_idx"),
         ]
 
     def __str__(self):
