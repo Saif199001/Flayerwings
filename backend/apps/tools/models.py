@@ -26,7 +26,7 @@ class ToolTemplate(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["tool", "name", "version"], name="uniq_tool_template_version")]
-        indexes = [models.Index(fields=["tool", "active"])]
+        indexes = [models.Index(fields=["tool", "active"], name="tools_tool_too_9e0f8c_idx")]
 
     def __str__(self):
         return f"{self.tool.slug}: {self.name} v{self.version}"
@@ -56,7 +56,10 @@ class ToolDocument(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
-        indexes = [models.Index(fields=["document_type", "created_at"]), models.Index(fields=["visitor_id", "created_at"])]
+        indexes = [
+            models.Index(fields=["document_type", "created_at"], name="tools_toold_documen_3a8c55_idx"),
+            models.Index(fields=["visitor_id", "created_at"], name="tools_toold_visito_42e6b2_idx"),
+        ]
 
     def __str__(self):
         return f"{self.document_type}:{self.document_number}"
@@ -91,7 +94,10 @@ class ToolEvent(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
-        indexes = [models.Index(fields=["tool", "event_type", "created_at"]), models.Index(fields=["visitor_id", "created_at"])]
+        indexes = [
+            models.Index(fields=["tool", "event_type", "created_at"], name="tools_toole_tool_id_2d5a4b_idx"),
+            models.Index(fields=["visitor_id", "created_at"], name="tools_toole_visito_4a15d8_idx"),
+        ]
 
     def __str__(self):
         return f"{self.tool.slug}:{self.event_type}"
