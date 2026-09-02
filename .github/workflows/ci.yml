@@ -39,6 +39,9 @@ jobs:
       - name: Check deployment configuration
         run: python manage.py check --deploy
 
+      - name: Validate production environment
+        run: python manage.py validate_environment
+
       - name: Check migrations are in sync
         run: python manage.py makemigrations --check --dry-run
 
