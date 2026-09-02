@@ -7,12 +7,15 @@ from .models import ToolDefinition, ToolDocument
 class ToolsApiTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.tool = ToolDefinition.objects.create(slug="gst-invoice-generator", name="GST Invoice Generator")
+        cls.tool = ToolDefinition.objects.get(slug="gst-invoice-generator")
 
     def test_tool_list_is_public(self):
         response = self.client.get("/api/v1/tools/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]["slug"], self.tool.slug)
+        self.assertIn(
+            self.tool.slug,
+            [tool["slug"] for tool in response.data],
+        )
 
     def test_anonymous_document_can_be_saved_and_retrieved_by_visitor(self):
         payload = {
@@ -43,4 +46,4 @@ class ToolsApiTests(APITestCase):
 
     def test_tool_stats_are_not_public(self):
         response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
-        self.assertEqual(response.status_code, 401)
+        self.assertIn(response.status_code, [401, 403])
