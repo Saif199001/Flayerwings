@@ -69,6 +69,7 @@ class ToolEvent(models.Model):
         COMPLETE = "tool_complete", "Tool Complete"
         DOCUMENT_CREATED = "document_created", "Document Created"
         PDF_DOWNLOADED = "pdf_downloaded", "PDF Downloaded"
+        PNG_DOWNLOADED = "png_downloaded", "PNG Downloaded"
         COPY = "copy", "Copy"
         CTA_CLICK = "cta_click", "CTA Click"
         LEAD_SUBMITTED = "lead_submitted", "Lead Submitted"
