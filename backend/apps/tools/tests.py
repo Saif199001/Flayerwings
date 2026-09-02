@@ -1,7 +1,10 @@
-from django.urls import reverse
+from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 
 from .models import ToolDefinition, ToolDocument
+
+
+User = get_user_model()
 
 
 class ToolsApiTests(APITestCase):
@@ -37,13 +40,45 @@ class ToolsApiTests(APITestCase):
         self.assertEqual(len(history.data), 1)
 
     def test_event_can_be_recorded(self):
-        response = self.client.post("/api/v1/tools/events/", {"tool": self.tool.slug, "event_type": "tool_open", "visitor_id": "visitor-123"}, format="json")
+        response = self.client.post(
+            "/api/v1/tools/events/",
+            {"tool": self.tool.slug, "event_type": "tool_open", "visitor_id": "visitor-123"},
+            format="json",
+        )
         self.assertEqual(response.status_code, 201)
 
     def test_png_download_event_can_be_recorded(self):
-        response = self.client.post("/api/v1/tools/events/", {"tool": self.tool.slug, "event_type": "png_downloaded", "visitor_id": "visitor-123", "metadata": {"format": "png"}}, format="json")
+        response = self.client.post(
+            "/api/v1/tools/events/",
+            {
+                "tool": self.tool.slug,
+                "event_type": "png_downloaded",
+                "visitor_id": "visitor-123",
+                "metadata": {"format": "png"},
+            },
+            format="json",
+        )
         self.assertEqual(response.status_code, 201)
 
     def test_tool_stats_are_not_public(self):
         response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
-        self.assertIn(response.status_code, [401, 403])
+        self.assertEqual(response.status_code, 401)
+
+    def test_tool_stats_are_forbidden_for_non_admin_users(self):
+        user = User.objects.create_user(username="regular-user", password="test-password")
+        self.client.force_authenticate(user=user)
+        response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_tool_stats_are_available_to_admin_users(self):
+        admin = User.objects.create_user(
+            username="admin-user",
+            password="test-password",
+            is_staff=True,
+        )
+        self.client.force_authenticate(user=admin)
+        response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["tool"], self.tool.slug)
+        self.assertIn("events", response.data)
+        self.assertIn("documents", response.data)
