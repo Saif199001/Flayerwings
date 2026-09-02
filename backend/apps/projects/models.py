@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Project(models.Model):
-    class ProjectType(models.TextChoices:
+    class ProjectType(models.TextChoices):
         PRODUCT = "product", "Product"
         CLIENT = "client", "Client Project"
         CASE_STUDY = "case-study", "Case Study"
