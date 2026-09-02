@@ -144,10 +144,7 @@ function UTMBuilder() {
         <div className="tool-output">
           <small>Generated URL</small>
           <code>{result}</code>
-          <CopyButton
-            value={valid ? result : ""}
-            label="Copy URL"
-          />
+          <CopyButton value={valid ? result : ""} label="Copy URL" />
           {valid && (
             <button
               className="button button-secondary"
