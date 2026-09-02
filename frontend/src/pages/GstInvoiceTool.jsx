@@ -34,7 +34,6 @@ function InvoicePreview({ seller, buyer, invoice, items, totals }) {
     <div className="invoice-paper">
       <header className="invoice-paper-header">
         <div className="invoice-brand">
-          <div className="invoice-logo-mark">FW</div>
           <div>
             <h2>{seller.name || "Your Business"}</h2>
             {seller.gstin && <p>GSTIN: {seller.gstin}</p>}
