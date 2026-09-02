@@ -129,7 +129,7 @@ export default function QrGeneratorTool() {
           <aside className="qrg-result">
             <div className="qrg-result-head"><span>LIVE OUTPUT</span><strong>{logo ? "Branded QR" : "Standard QR"}</strong></div>
             <div className="qrg-preview">{qr ? <img src={qr} alt="Generated QR code" /> : <div className="qrg-empty"><div>QR</div><p>Your generated code will appear here.</p></div>}</div>
-            {qr && <a className="button button-primary qrg-download" href={qr} download={downloadName} onClick={() => trackToolEvent({ tool: "qr-generator", event_type: "pdf_downloaded", visitor_id: getToolVisitorId(), session_id: getToolVisitorId(), ...getAttribution(), metadata: { format: "png", branded: Boolean(logo) } }).catch(() => {})}>Download PNG</a>}
+            {qr && <a className="button button-primary qrg-download" href={qr} download={downloadName} onClick={() => trackToolEvent({ tool: "qr-generator", event_type: "png_downloaded", visitor_id: getToolVisitorId(), session_id: getToolVisitorId(), ...getAttribution(), metadata: { format: "png", branded: Boolean(logo) } }).catch(() => {})}>Download PNG</a>}
             <div className="qrg-result-tip"><strong>Ready to use</strong><span>Print it on menus, invoices, packaging, posters or business cards.</span></div>
           </aside>
         </section>
