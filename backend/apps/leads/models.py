@@ -38,10 +38,10 @@ class Lead(models.Model):
     class Meta:
         ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=["status", "created_at"]),
-            models.Index(fields=["lead_type", "created_at"]),
-            models.Index(fields=["email"]),
-            models.Index(fields=["tool_slug", "created_at"]),
+            models.Index(fields=["status", "created_at"], name="leads_lead_status_0d2a7d_idx"),
+            models.Index(fields=["lead_type", "created_at"], name="leads_lead_lead_typ_8e5d45_idx"),
+            models.Index(fields=["email"], name="leads_lead_email_4b9f24_idx"),
+            models.Index(fields=["tool_slug", "created_at"], name="leads_lead_tool_slu_2d6a61_idx"),
         ]
 
     def __str__(self):
