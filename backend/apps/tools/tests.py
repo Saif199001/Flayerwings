@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.test import override_settings
 from rest_framework.test import APITestCase
 
 from .models import ToolDefinition, ToolDocument
@@ -7,6 +8,7 @@ from .models import ToolDefinition, ToolDocument
 User = get_user_model()
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class ToolsApiTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
