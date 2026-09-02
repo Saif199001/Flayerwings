@@ -8,6 +8,8 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
+from .quotation_pdf import render_quotation_pdf
+
 
 def _money(value):
     return f"Rs. {float(value or 0):,.2f}"
@@ -37,17 +39,13 @@ def _invoice_pdf(document):
     story = []
 
     seller_name = business.get("name") or "Your Business"
-    seller_lines = [
-        _p(seller_name, ParagraphStyle("SellerName", parent=bold, fontSize=17, leading=20, textColor=colors.HexColor("#101828"))),
-    ]
+    seller_lines = [_p(seller_name, ParagraphStyle("SellerName", parent=bold, fontSize=17, leading=20, textColor=colors.HexColor("#101828")))]
     if business.get("gstin"): seller_lines.append(_p(f"GSTIN: {business['gstin']}", small))
     contact = " | ".join(str(x) for x in (business.get("email"), business.get("phone")) if x)
     if contact: seller_lines.append(_p(contact, small))
     if business.get("address"): seller_lines.append(_p(business["address"], small))
 
-    header = Table([
-        [Table([["FW"], ["FLAYER WINGS"]], colWidths=[18 * mm]), Table([[x] for x in seller_lines], colWidths=[92 * mm]), Table([[_p("TAX INVOICE", title_style)], [_p(document.document_number, right_bold)],], colWidths=[58 * mm])]
-    ], colWidths=[20 * mm, 94 * mm, 58 * mm])
+    header = Table([[Table([["FW"], ["FLAYER WINGS"]], colWidths=[18 * mm]), Table([[x] for x in seller_lines], colWidths=[92 * mm]), Table([[_p("TAX INVOICE", title_style)], [_p(document.document_number, right_bold)]], colWidths=[58 * mm])]], colWidths=[20 * mm, 94 * mm, 58 * mm])
     header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BACKGROUND", (0, 0), (0, 0), colors.HexColor("#2474E6")), ("TEXTCOLOR", (0, 0), (0, 0), colors.white), ("ALIGN", (0, 0), (0, 0), "CENTER"), ("FONTSIZE", (0, 0), (0, 0), 12), ("FONTNAME", (0, 0), (0, 0), "Helvetica-Bold"), ("BOTTOMPADDING", (0, 0), (-1, -1), 4)]))
     story += [header, Spacer(1, 6 * mm)]
 
@@ -57,13 +55,8 @@ def _invoice_pdf(document):
     if contact: bill_lines.append(_p(contact, small))
     if customer.get("address"): bill_lines.append(_p(customer["address"], small))
 
-    meta_lines = [
-        ["Invoice Date", metadata.get("invoice_date") or document.created_at.strftime("%Y-%m-%d")],
-        ["Due Date", metadata.get("due_date") or "—"],
-        ["Tax Type", "IGST" if tax.get("tax_mode") == "inter" else "CGST + SGST"],
-        ["GST Rate", f"{float(tax.get('gst_rate', 0) or 0):g}%"],
-    ]
-    meta_table = Table([[ _p(k, small), _p(v, right_bold)] for k, v in meta_lines], colWidths=[32 * mm, 42 * mm])
+    meta_lines = [["Invoice Date", metadata.get("invoice_date") or document.created_at.strftime("%Y-%m-%d")], ["Due Date", metadata.get("due_date") or "—"], ["Tax Type", "IGST" if tax.get("tax_mode") == "inter" else "CGST + SGST"], ["GST Rate", f"{float(tax.get('gst_rate', 0) or 0):g}%"]]
+    meta_table = Table([[_p(k, small), _p(v, right_bold)] for k, v in meta_lines], colWidths=[32 * mm, 42 * mm])
     meta_table.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("BOTTOMPADDING", (0, 0), (-1, -1), 2)]))
     info = Table([[Table([[x] for x in bill_lines], colWidths=[92 * mm]), meta_table]], colWidths=[108 * mm, 76 * mm])
     info.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), .5, colors.HexColor("#D8E0EA")), ("INNERGRID", (0, 0), (-1, -1), .5, colors.HexColor("#D8E0EA")), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 7), ("RIGHTPADDING", (0, 0), (-1, -1), 7), ("TOPPADDING", (0, 0), (-1, -1), 7), ("BOTTOMPADDING", (0, 0), (-1, -1), 7)]))
@@ -102,6 +95,8 @@ def build_document_pdf(document):
     """Render a stable PDF from persisted document JSON."""
     if document.document_type == "invoice":
         return _invoice_pdf(document)
+    if document.document_type == "quotation":
+        return render_quotation_pdf(document)
 
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=18 * mm, leftMargin=18 * mm, topMargin=18 * mm, bottomMargin=18 * mm)
