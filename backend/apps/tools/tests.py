@@ -64,7 +64,7 @@ class ToolsApiTests(APITestCase):
 
     def test_tool_stats_are_not_public(self):
         response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
     def test_tool_stats_are_forbidden_for_non_admin_users(self):
         user = User.objects.create_user(username="regular-user", password="test-password")
