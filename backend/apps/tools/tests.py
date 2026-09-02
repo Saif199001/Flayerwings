@@ -36,3 +36,11 @@ class ToolsApiTests(APITestCase):
     def test_event_can_be_recorded(self):
         response = self.client.post("/api/v1/tools/events/", {"tool": self.tool.slug, "event_type": "tool_open", "visitor_id": "visitor-123"}, format="json")
         self.assertEqual(response.status_code, 201)
+
+    def test_png_download_event_can_be_recorded(self):
+        response = self.client.post("/api/v1/tools/events/", {"tool": self.tool.slug, "event_type": "png_downloaded", "visitor_id": "visitor-123", "metadata": {"format": "png"}}, format="json")
+        self.assertEqual(response.status_code, 201)
+
+    def test_tool_stats_are_not_public(self):
+        response = self.client.get("/api/v1/tools/stats/gst-invoice-generator/")
+        self.assertEqual(response.status_code, 401)
