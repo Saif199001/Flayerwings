@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 import { TOOLS } from "../config/tools";
 
 const ICONS = {
@@ -15,6 +16,11 @@ const ICONS = {
 export default function ToolsPage() {
   return (
     <main className="tools-page">
+      <SEO
+        title="Free Business Tools | Flayer Wings"
+        description="Free business tools for GST invoices, GST calculations, QR codes, WhatsApp links, quotations, receipts, payment reminders and UTM campaigns."
+        path="/tools"
+      />
       <section className="tools-hero section">
         <div className="section-container">
           <span className="eyebrow-cyan">FREE TOOLS</span>
