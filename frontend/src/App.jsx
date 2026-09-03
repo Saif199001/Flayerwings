@@ -14,6 +14,7 @@ import LegalPage from "./pages/LegalPage";
 import "./styles/premium.css";
 import "./styles/hero-premium.css";
 import "./styles/legal.css";
+import "./styles/contact-fix.css";
 
 const TOOL_ICONS = { invoice: "🧾", calculator: "🧮", qr: "▦", whatsapp: "◉", quotation: "📋", receipt: "🧾", payment: "💳", utm: "🔗" };
 
