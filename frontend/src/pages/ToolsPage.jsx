@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
+import { TOOLS } from "../config/tools";
 
-export const TOOLS = [
-  { slug: "gst-invoice-generator", icon: "🧾", title: "GST Invoice Generator", copy: "Create professional GST invoices with automatic tax calculations and print-ready output." },
-  { slug: "gst-calculator", icon: "🧮", title: "GST Calculator", copy: "Add or remove GST instantly with clear CGST, SGST and IGST calculations." },
-  { slug: "qr-generator", icon: "▦", title: "QR Code Generator", copy: "Create QR codes for links, text, contact details and more, with optional logo branding." },
-  { slug: "whatsapp-link-generator", icon: "◉", title: "WhatsApp Link & QR", copy: "Create click-to-chat WhatsApp links, QR codes and ready-to-use website buttons." },
-  { slug: "quotation-generator", icon: "📋", title: "Quotation Generator", copy: "Build professional quotations and estimates with GST, discounts and customer details." },
-  { slug: "receipt-generator", icon: "🧾", title: "Receipt Generator", copy: "Create clean payment receipts with your business branding and printable output." },
-  { slug: "payment-reminder-generator", icon: "💳", title: "Payment Reminder", copy: "Generate polite, professional payment reminder messages ready to share on WhatsApp." },
-  { slug: "utm-builder", icon: "🔗", title: "UTM Campaign Builder", copy: "Build accurate campaign URLs for tracking traffic from social, ads, email and more." },
-];
+const ICONS = {
+  invoice: "🧾",
+  calculator: "🧮",
+  qr: "▦",
+  whatsapp: "◉",
+  quotation: "📋",
+  receipt: "🧾",
+  payment: "💳",
+  utm: "🔗",
+};
 
 export default function ToolsPage() {
   return (
@@ -22,7 +23,7 @@ export default function ToolsPage() {
           <div className="tools-grid">
             {TOOLS.map((tool) => (
               <Link className="free-tool-card" to={`/tools/${tool.slug}`} key={tool.slug}>
-                <span className="free-tool-icon" aria-hidden="true">{tool.icon}</span>
+                <span className="free-tool-icon" aria-hidden="true">{ICONS[tool.icon] || "•"}</span>
                 <span className="free-tool-content">
                   <strong>{tool.title}</strong>
                   <span>{tool.copy}</span>
