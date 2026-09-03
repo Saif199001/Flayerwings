@@ -1,4 +1,17 @@
 /* Homepage contact section layout fix */
+
+/* The legacy global .contact-section rule makes the section itself a 2-column grid.
+   The homepage now owns the inner layout with .contact-grid, so the section must
+   remain a full-width block to prevent the inner card from being squeezed into
+   the first grid column. */
+.contact-section {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 100px 0;
+}
+
 .contact-section .contact-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
@@ -56,8 +69,12 @@
 }
 
 @media (max-width: 640px) {
+  .contact-section {
+    padding: 72px 0;
+  }
+
   .contact-section .contact-grid {
-    width: calc(100% - 32px);
+    width: calc(100% - 28px);
     padding: 24px 18px;
   }
 
